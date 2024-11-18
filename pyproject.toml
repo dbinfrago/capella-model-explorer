@@ -30,10 +30,11 @@ dependencies = [
   "capellambse>=0.6.13,<0.7",
   "click>=8.1.8,<9",
   "jinja2>=3.1.5,<4",
+  "logfmter>=0.0.9",
   "prometheus-client>=0.21.1,<0.22",
   "python-fasthtml>=0.12.1,<0.13",
   "uvicorn>=0.34.0,<0.35",
-  "logfmter>=0.0.9",
+  "asyncclick>=8.1.8",
 ]
 
 [project.urls]
