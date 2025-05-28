@@ -1,0 +1,46 @@
+# Copyright DB InfraGO AG and contributors
+# SPDX-License-Identifier: Apache-2.0
+
+[[templates]]
+id = "physical-capability.html.j2"
+name = "Physical Capability"
+path = "physical-capability.html.j2"
+description = "Specifies what the physical system should be capable of and how it needs to interact with external actors."
+scope.type = "CapabilityRealization"
+scope.below = "pa"
+
+[[templates]]
+id = "physical-component"
+name = "Physical Component"
+path = "physical-component.html.j2"
+description = "Defines a Physical Component"
+flags = ["experimental"]
+scope.type = "PhysicalComponent"
+scope.below = "pa"
+
+[[templates]]
+id = "physical-link"
+name = "Physical Interface"
+path = "physical-link.html.j2"
+description = "Defines a Physical Interface between 2 components"
+flags = ["experimental"]
+scope.type = "PhysicalLink"
+scope.below = "pa"
+
+[[templates]]
+id = "physical-function"
+name = "Physical Functions"
+path = "physical-function.html.j2"
+description = "Defines function of a physical component or an actor"
+flags = ["experimental"]
+scope.type = "PhysicalFunction"
+scope.below = "pa"
+
+[[templates]]
+id = "sw-interface"
+name = "Software Interfaces"
+path = "sw-interface.html.j2"
+description = "Defines interfaces between software components"
+flags = ["experimental"]
+scope.type = "ComponentExchange"
+scope.below = "pa"
