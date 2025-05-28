@@ -408,7 +408,7 @@ def template_card(template: reports.Template) -> ft.A:
     url = app.app.url_path_for("template_page", template_id=template.id)
 
     chips = []
-    if template.isExperimental:
+    if reports.TemplateFlags.EXPERIMENTAL in template.flags:
         c = ft.Div(
             icons.badge_experimental(),
             ft.P("Experimental"),
@@ -434,7 +434,7 @@ def template_card(template: reports.Template) -> ft.A:
         )
         chips.append(c)
 
-    if template.isStable:
+    if reports.TemplateFlags.STABLE in template.flags:
         c = ft.Div(
             icons.badge_stable(),
             ft.P("Stable"),
@@ -460,7 +460,7 @@ def template_card(template: reports.Template) -> ft.A:
         )
         chips.append(c)
 
-    if template.isDocument:
+    if reports.TemplateFlags.DOCUMENT in template.flags:
         c = ft.Div(
             icons.badge_document(),
             ft.P("Document"),

@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import base64
+import enum
 import json
 import logging
 import operator
 import pathlib
 import re
+import tomllib
 import traceback
 import typing as t
 
@@ -18,7 +20,6 @@ import capellambse_context_diagrams
 import jinja2
 import markupsafe
 import pydantic as p
-import yaml
 from lxml import etree
 from lxml import html as lxml_html
 
@@ -57,30 +58,47 @@ SVG_WRAP_MARKUP = markupsafe.Markup(
 logger = logging.getLogger(__name__)
 
 
-class Template(p.BaseModel):
+class TemplateFlags(enum.Flag):
+    SINGLE = enum.auto()
+    STABLE = enum.auto()
+    DOCUMENT = enum.auto()
+    EXPERIMENTAL = enum.auto()
+
+
+class Template(p.BaseModel, extra="forbid"):
     id: str = p.Field(title="Template identifier")
     name: str = p.Field(title="Template name")
     category: str = p.Field(title="Template category")
     description: str = p.Field(title="Template description")
 
     scope: TemplateScope | None = p.Field(default=None, title="Template scope")
-    single: bool | None = p.Field(None, title="Single instance flag")
-    isStable: bool | None = p.Field(None, title="Stable template flag")
-    isDocument: bool | None = p.Field(None, title="Document template flag")
-    isExperimental: bool | None = p.Field(
-        None, title="Experimental template flag"
+    flags: TemplateFlags = p.Field(
+        default=TemplateFlags(0), title="Template flags"
     )
+
     path: pathlib.Path = p.Field(title="Absolute file path to template")
-    error: str | None = p.Field(None, title="Broken template flag")
-    traceback: str | None = p.Field(None, title="Template error traceback")
     instance_count: int = p.Field(0, title="Number of instances")
     instances: list[dict] = p.Field([], title="List of instances")
+
+    @p.field_validator("flags", mode="before")
+    @classmethod
+    def _validate_flags(cls, v: t.Any) -> TemplateFlags:
+        if isinstance(v, str):
+            v = [v]
+        else:
+            v = list(v)
+
+        flags = TemplateFlags(0)
+        for i in v:
+            flags |= TemplateFlags[str(i).upper()]
+
+        return flags
 
     def model_post_init(self, _):
         self._compute_instances()
 
     def _compute_instances(self) -> None:
-        if self.single:
+        if TemplateFlags.SINGLE in self.flags:
             self.instance_count = 1
             return
         try:
@@ -144,7 +162,7 @@ class Template(p.BaseModel):
         return {"uuid": obj.uuid, "name": str(name)}
 
 
-class TemplateScope(p.BaseModel):
+class TemplateScope(p.BaseModel, extra="forbid"):
     type: str | None = p.Field(None, title="Model Element Type")
     below: t.Literal["oa", "sa", "la", "pa"] | None = p.Field(
         None, title="Model element to search below, scope limiter"
@@ -176,7 +194,7 @@ class TemplateScope(p.BaseModel):
         return True
 
 
-class TemplateCategory(p.BaseModel):
+class TemplateCategory(p.BaseModel, extra="forbid"):
     idx: str = p.Field(title="Category Identifier")
     templates: list[Template] = p.Field(
         default_factory=list, title="Templates in this category"
@@ -208,7 +226,7 @@ def _make_href(
             generic_template = template
             continue
 
-        if template.single:
+        if TemplateFlags.SINGLE in template.flags:
             continue
 
         if template.scope and not template.scope.applies_to(obj):
@@ -335,16 +353,19 @@ def render_diagram(svg: str, title: str, /) -> markupsafe.Markup:
 
 
 def load_templates() -> None:
-    for idx_path in sorted(c.TEMPLATES_DIR.glob("**/*.yaml")):
+    for idx_path in sorted(c.TEMPLATES_DIR.glob("**/*.toml")):
         category = re.sub(r"^[A-Za-z0-9]{2}-", "", idx_path.parent.name)
-        template_defs = yaml.safe_load(idx_path.read_text(encoding="utf8"))
-        for template_def in template_defs:
+
+        logger.info("Loading template index at %s", idx_path)
+        with idx_path.open("rb") as f:
+            template_defs = tomllib.load(f)
+
+        for template_def in template_defs["templates"]:
             template_def["category"] = category
-            template_def["path"] = str(
-                idx_path.parent / template_def["template"]
-            )
+            template_def["path"] = str(idx_path.parent / template_def["path"])
             template = Template(**template_def)
             state.templates.append(template)
+
         _register_template_category(category)
 
 

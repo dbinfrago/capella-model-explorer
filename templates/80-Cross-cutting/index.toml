@@ -1,0 +1,34 @@
+# Copyright DB InfraGO AG and contributors
+# SPDX-License-Identifier: Apache-2.0
+
+[[templates]]
+id = "class"
+name = "Data Class"
+path = "classes.html.j2"
+description = "Specifies structure of a data class. A class may be used to describe anything from a simple object relationship to a message on a bus."
+scope.type = "Class"
+
+[[templates]]
+id = "diagram"
+name = "Diagrams"
+path = "diagrams.html.j2"
+description = "Provides access to all human-made diagrams inside the model"
+scope.type = "DRepresentationDescriptor"
+
+[[templates]]
+id = "exchange-item"
+name = "Exchange Item"
+path = "exchange-item.html.j2"
+description = "Specifies an exchange item, i.e. energy / material / information."
+scope.type = "ExchangeItem"
+
+[[templates]]
+id = "logical-state-machine"
+name = "State Machine Regions"
+path = "region.html.j2"
+description = "Defines a state machine region of a component or an actor"
+flags = ["experimental"]
+
+[templates.scope]
+type = "Region"
+filters.states = "not_empty"
