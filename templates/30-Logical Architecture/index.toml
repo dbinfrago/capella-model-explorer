@@ -1,0 +1,63 @@
+# Copyright DB InfraGO AG and contributors
+# SPDX-License-Identifier: Apache-2.0
+
+[[templates]]
+id = "logical-capability"
+name = "Logical Capability"
+path = "logical-capability.html.j2"
+description = "Specifies what the logical system should be capable of and how it needs to interact with external actors."
+scope.type = "CapabilityRealization"
+scope.below = "la"
+
+[[templates]]
+id = "logical-component"
+name = "Logical Components"
+path = "logical-component.html.j2"
+description = "Specifies a logical component. This is a ported template from a prototype project."
+flags = ["experimental"]
+scope.type = "LogicalComponent"
+scope.below = "la"
+
+[[templates]]
+id = "logical-interface"
+name = "Logical Interfaces"
+path = "logical-interface.html.j2"
+description = "Defines interfaces between actors and logical system components"
+flags = ["experimental"]
+scope.type = "ComponentExchange"
+scope.below = "la"
+
+[[templates]]
+id = "functional-interface-specification"
+name = "Functional Interface Specification"
+path = "FIS.html.j2"
+description = "Defines functional interfaces between logical components (subsystems) and actors"
+flags = ["experimental"]
+scope.type = "ComponentExchange"
+scope.below = "la"
+
+[[templates]]
+id = "logical-function"
+name = "Logical Functions"
+path = "logical-function.html.j2"
+description = "Defines function of a logical system component or an actor"
+scope.type = "LogicalFunction"
+scope.below = "la"
+
+[[templates]]
+id = "logical-component-mode"
+name = "Logical Component Modes"
+path = "logical-state.html.j2"
+description = "Defines states and modes of a system component or an actor"
+flags = ["experimental"]
+scope.type = "Mode"
+scope.below = "la"
+
+[[templates]]
+id = "logical-component-state"
+name = "Logical Component States"
+path = "logical-state.html.j2"
+description = "Defines states and modes of a system component or an actor"
+flags = ["experimental"]
+scope.type = "State"
+scope.below = "la"

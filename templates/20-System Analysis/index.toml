@@ -1,0 +1,60 @@
+# Copyright DB InfraGO AG and contributors
+# SPDX-License-Identifier: Apache-2.0
+
+[[templates]]
+id = "system-capability"
+name = "System Capability"
+path = "system-capability.html.j2"
+description = "Specifies what the system should be capable of and how it needs to interact with external actors."
+scope.type = "Capability"
+scope.below = "sa"
+
+[[templates]]
+id = "system-function"
+name = "System Function"
+path = "system_function.html.j2"
+description = "Specifies what the system should do and how it needs to interact with external actors."
+flags = ["stable"]
+scope.type = "SystemFunction"
+scope.below = "sa"
+
+[[templates]]
+id = "system-actors"
+name = "System Actors"
+path = "system-actor.html.j2"
+description = "define who the system interacts with and why"
+
+[templates.scope]
+type = "SystemComponent"
+below = "sa"
+filters.is_actor = true
+
+[[templates]]
+id = "system-definition"
+name = "System Definition"
+path = "system-definition.html.j2"
+description = "defines the need for the system, its boundary and interfaces"
+flags = ["single", "experimental", "document"]
+
+[[templates]]
+id = "system-interfaces"
+name = "System Interfaces"
+path = "system-interface.html.j2"
+description = "defines interactions between system and actors at a high level"
+scope.type = "ComponentExchange"
+scope.below = "sa"
+
+[[templates]]
+id = "functional-chain"
+name = "Functional Chain"
+path = "../functional-chain.html.j2"
+description = "Defines a functional chain of involved functions and exchanges"
+scope.type = "FunctionalChain"
+scope.below = "sa"
+
+[[templates]]
+id = "mod-rules-compliance"
+name = "SA Modelling Rules Compliance Report"
+path = "mod-rules-compliance.html.j2"
+description = "Evaluates compliance of the system analysis model with the modelling rules."
+flags = ["single", "experimental", "document"]

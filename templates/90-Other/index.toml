@@ -1,0 +1,22 @@
+# Copyright DB InfraGO AG and contributors
+# SPDX-License-Identifier: Apache-2.0
+
+[[templates]]
+id = "__generic__"
+name = "Generic object description"
+path = "__generic__.html.j2"
+description = "Generic built-in template that shows all available information about a given object."
+
+[[templates]]
+id = "req"
+name = "Requirement Modules"
+path = "req.html.j2"
+description = "Basic template to visualize requirement objects"
+scope.type = "CapellaModule"
+
+[[templates]]
+id = "object_comparison"
+name = "Object Comparison"
+path = "object_comparison.html.j2"
+description = "Template to visualize differences between two objects"
+flags = ["experimental", "single"]
