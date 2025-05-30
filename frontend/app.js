@@ -11,7 +11,11 @@ import "./htmx.js";
 import "idiomorph/dist/idiomorph.js";
 import "idiomorph/dist/idiomorph-ext.js";
 
+import * as mdui from "mdui";
+
 import "./compiled.css";
+
+window.mdui = mdui;
 
 window.openDiagramViewer = function (svgContainer) {
   if (typeof window.lightbox === "undefined") {

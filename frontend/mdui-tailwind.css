@@ -1,0 +1,100 @@
+/*
+ * Copyright DB InfraGO AG and contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+@theme inline {
+  --color-primary-50: hsl(var(--primary-color-hue) 46.2% 94.9%);
+  --color-primary-100: hsl(var(--primary-color-hue) 49% 90%);
+  --color-primary-200: hsl(var(--primary-color-hue) 47.7% 79%);
+  --color-primary-300: hsl(var(--primary-color-hue) 48.1% 69%);
+  --color-primary-400: hsl(var(--primary-color-hue) 48.6% 58%);
+  --color-primary-500: hsl(var(--primary-color-hue) 50% 47.8%);
+  --color-primary-600: hsl(var(--primary-color-hue) 48.5% 38%);
+  --color-primary-700: hsl(var(--primary-color-hue) 48.6% 29%);
+  --color-primary-800: hsl(var(--primary-color-hue) 48.5% 19%);
+  --color-primary-900: hsl(var(--primary-color-hue) 49% 10%);
+  --color-primary-950: hsl(var(--primary-color-hue) 46.2% 5.1%);
+
+  --color-primary: rgb(var(--mdui-color-primary));
+  --color-on-primary: rgb(var(--mdui-color-on-primary));
+  --color-primary-container: rgb(var(--mdui-color-primary-container));
+  --color-on-primary-container: rgb(var(--mdui-color-on-primary-container));
+  --color-secondary: rgb(var(--mdui-color-secondary));
+  --color-on-secondary: rgb(var(--mdui-color-on-secondary));
+  --color-secondary-container: rgb(var(--mdui-color-secondary-container));
+  --color-on-secondary-container: rgb(var(--mdui-color-on-secondary-container));
+  --color-tertiary: rgb(var(--mdui-color-tertiary));
+  --color-on-tertiary: rgb(var(--mdui-color-on-tertiary));
+  --color-tertiary-container: rgb(var(--mdui-color-tertiary-container));
+  --color-on-tertiary-container: rgb(var(--mdui-color-on-tertiary-container));
+  --color-error: rgb(var(--mdui-color-error));
+  --color-on-error: rgb(var(--mdui-color-on-error));
+  --color-error-container: rgb(var(--mdui-color-error-container));
+  --color-on-error-container: rgb(var(--mdui-color-on-error-container));
+  --color-background: rgb(var(--mdui-color-background));
+  --color-on-background: rgb(var(--mdui-color-on-background));
+  --color-surface: rgb(var(--mdui-color-surface));
+  --color-on-surface: rgb(var(--mdui-color-on-surface));
+  --color-surface-variant: rgb(var(--mdui-color-surface-variant));
+  --color-on-surface-variant: rgb(var(--mdui-color-on-surface-variant));
+  --color-outline: rgb(var(--mdui-color-outline));
+  --color-outline-variant: rgb(var(--mdui-color-outline-variant));
+  --color-shadow: rgb(var(--mdui-color-shadow));
+  --color-scrim: rgb(var(--mdui-color-scrim));
+  --color-inverse-surface: rgb(var(--mdui-color-inverse-surface));
+  --color-inverse-on-surface: rgb(var(--mdui-color-inverse-on-surface));
+  --color-inverse-primary: rgb(var(--mdui-color-inverse-primary));
+  --color-surface-dim: rgb(var(--mdui-color-surface-dim));
+  --color-surface-bright: rgb(var(--mdui-color-surface-bright));
+  --color-surface-container-lowest: rgb(var(--mdui-color-surface-container-lowest));
+  --color-surface-container-low: rgb(var(--mdui-color-surface-container-low));
+  --color-surface-container: rgb(var(--mdui-color-surface-container));
+  --color-surface-container-high: rgb(var(--mdui-color-surface-container-high));
+  --color-surface-container-highest: var(
+    --mdui-color-surface-container-highest
+  );
+  --color-surface-tint-color: rgb(var(--mdui-color-surface-tint-color));
+  --color-layer-oa: rgb(var(--mdui-color-layer-oa));
+  --color-on-layer-oa: rgb(var(--mdui-color-on-layer-oa));
+  --color-layer-oa-container: rgb(var(--mdui-color-layer-oa-container));
+  --color-on-layer-oa-container: rgb(var(--mdui-color-on-layer-oa-container));
+  --color-layer-sa: rgb(var(--mdui-color-layer-sa));
+  --color-on-layer-sa: rgb(var(--mdui-color-on-layer-sa));
+  --color-layer-sa-container: rgb(var(--mdui-color-layer-sa-container));
+  --color-on-layer-sa-container: rgb(var(--mdui-color-on-layer-sa-container));
+  --color-layer-la: rgb(var(--mdui-color-layer-la));
+  --color-on-layer-la: rgb(var(--mdui-color-on-layer-la));
+  --color-layer-la-container: rgb(var(--mdui-color-layer-la-container));
+  --color-on-layer-la-container: rgb(var(--mdui-color-on-layer-la-container));
+  --color-layer-pa: rgb(var(--mdui-color-layer-pa));
+  --color-on-layer-pa: rgb(var(--mdui-color-on-layer-pa));
+  --color-layer-pa-container: rgb(var(--mdui-color-layer-pa-container));
+  --color-on-layer-pa-container: rgb(var(--mdui-color-on-layer-pa-container));
+  --color-chip-experimental: rgb(var(--mdui-color-chip-experimental));
+  --color-on-chip-experimental: rgb(var(--mdui-color-on-chip-experimental));
+  --color-chip-experimental-container: var(
+    --mdui-color-chip-experimental-container
+  );
+  --color-on-chip-experimental-container: var(
+    --mdui-color-on-chip-experimental-container
+  );
+  --color-chip-document: rgb(var(--mdui-color-chip-document));
+  --color-on-chip-document: rgb(var(--mdui-color-on-chip-document));
+  --color-chip-document-container: rgb(var(--mdui-color-chip-document-container));
+  --color-on-chip-document-container: var(
+    --mdui-color-on-chip-document-container
+  );
+  --color-chip-stable: rgb(var(--mdui-color-chip-stable));
+  --color-on-chip-stable: rgb(var(--mdui-color-on-chip-stable));
+  --color-chip-stable-container: rgb(var(--mdui-color-chip-stable-container));
+  --color-on-chip-stable-container: rgb(var(--mdui-color-on-chip-stable-container));
+
+  --radius-*: initial;
+  --radius-xs: var(--mdui-shape-corner-extra-small);
+  --radius-sm: var(--mdui-shape-corner-small);
+  --radius-md: var(--mdui-shape-corner-medium);
+  --radius-lg: var(--mdui-shape-corner-large);
+  --radius-xl: var(--mdui-shape-corner-extra-large);
+  --radius-full: var(--mdui-shape-corner-full);
+}

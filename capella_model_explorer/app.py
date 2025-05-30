@@ -116,7 +116,7 @@ def home(request) -> t.Any:
         ),
         components.bottom_bar(),
     )
-    return _maybe_wrap_content(request, None, None, page_content)
+    return _maybe_wrap_content(request, page_content)
 
 
 @ar.get("/model-object-list")
@@ -207,7 +207,8 @@ def template_page(
             fh.Code(template_path),
             cls="dark:text-neutral-100 grow content-center",
         )
-        return _maybe_wrap_content(request, None, None, content)
+        sidebar = components.template_sidebar(template=None)
+        return _maybe_wrap_content(request, content, sidebar=sidebar)
 
     if template.single:
         placeholder = components.report_placeholder(template, None)
@@ -234,7 +235,7 @@ def template_page(
             components.template_container(placeholder),
             components.template_sidebar(
                 template=template,
-                selected_model_element_uuid=model_element_uuid,
+                element_id=model_element_uuid,
                 search=search,
                 oob=True,
             ),
@@ -242,11 +243,6 @@ def template_page(
         )
 
     page_content = ft.Div(
-        components.template_sidebar(
-            template=template,
-            selected_model_element_uuid=model_element_uuid,
-            search=search,
-        ),
         components.template_container(placeholder),
         id="template-page-content",
         cls=(
@@ -260,15 +256,23 @@ def template_page(
             "w-full",
         ),
     )
+    sidebar = components.template_sidebar(
+        template=template,
+        element_id=model_element_uuid,
+        search=search,
+        oob=True,
+    )
 
     if request.headers.get("HX-Request") == "true":
         return (
             page_content,
+            sidebar,
             components.breadcrumbs(template, model_element_uuid, oob=True),
         )
 
     return components.application_shell(
         page_content,
+        sidebar=sidebar,
         template=template,
         element=model_element_uuid,
     )
@@ -276,15 +280,13 @@ def template_page(
 
 def _maybe_wrap_content(
     request: starlette.requests.Request,
-    template: reports.Template | None,
-    element: str | None,
     content: t.Any,
+    *,
+    sidebar: t.Any | None = None,
 ) -> t.Any:
     if request.headers.get("HX-Request") == "true":
-        return content, components.breadcrumbs(template, element, oob=True)
-    return components.application_shell(
-        content, template=template, element=element
-    )
+        return content, components.breadcrumbs(None, None, oob=True)
+    return components.application_shell(content, sidebar=None)
 
 
 @ar.get("/render")

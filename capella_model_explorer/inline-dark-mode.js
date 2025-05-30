@@ -7,20 +7,19 @@
   const query = window.matchMedia("(prefers-color-scheme: dark)");
 
   function applyTheme(...args) {
-    document.documentElement.classList.toggle(
-      "dark",
+    const is_dark =
       localStorage.theme === "dark" ||
-        (!("theme" in localStorage) && query.matches),
-    );
-    document
-      .getElementById("dark-mode-icon-system")
-      .classList.toggle("hidden", "theme" in localStorage);
-    document
-      .getElementById("dark-mode-icon-dark")
-      .classList.toggle("hidden", localStorage.theme !== "dark");
-    document
-      .getElementById("dark-mode-icon-light")
-      .classList.toggle("hidden", localStorage.theme !== "light");
+      (!("theme" in localStorage) && query.matches);
+    document.documentElement.classList.toggle("mdui-theme-dark", is_dark);
+    document.documentElement.classList.toggle("mdui-theme-light", !is_dark);
+
+    let button = document.getElementById("dark-mode-button");
+    button.icon =
+      localStorage.theme === "light"
+        ? "light_mode--outlined"
+        : localStorage.theme === "dark"
+          ? "dark_mode--outlined"
+          : "brightness_auto--outlined";
   }
 
   query.addEventListener("change", applyTheme);

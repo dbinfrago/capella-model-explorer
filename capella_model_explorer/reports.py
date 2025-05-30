@@ -33,7 +33,7 @@ SVG_PLACEHOLDER_MARKUP = markupsafe.Markup(
 )
 
 SVG_ERROR_MARKUP = markupsafe.Markup(
-    '<div class="svg-container relative inline-block px-6 py-4 w-full rounded-3xl bg-red-500'
+    '<div class="svg-container relative inline-block px-6 py-4 w-full rounded-xl bg-red-500'
     ' text-neutral-300 dark:bg-red-700 dark:text-neutral-400">'
     '<span class="cursor-pointer w-full"'
     " hx-on:click=\"this.nextElementSibling.classList.toggle('hidden')\">"

@@ -4,6 +4,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "bigger-picture": "^1.1.19",
     "buffer": "^6.0.3",
+    "mdui": "^2.1.4",
     "parcel": "^2.15.2",
     "prettier": "^3.4.2",
     "prettier-plugin-jinja-template": "^2.0.0",
