@@ -61,11 +61,7 @@ dev = [
   "types-pyyaml>=6.0.12.20250516",
 ]
 
-docs = [
-  "furo>=2024.8.6",
-  "sphinx>=8.2.3",
-  "sphinx-copybutton>=0.5.2",
-]
+docs = ["furo>=2024.8.6", "sphinx>=8.2.3", "sphinx-copybutton>=0.5.2"]
 
 [tool.coverage.run]
 branch = true

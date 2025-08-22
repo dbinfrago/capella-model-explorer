@@ -90,7 +90,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: python-package-distributions
-          path: 'dist/*'
+          path: "dist/*"
   pypi:
     name: Publish to PyPI
     runs-on: ubuntu-latest
