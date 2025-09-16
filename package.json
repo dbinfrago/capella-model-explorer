@@ -1,18 +1,18 @@
 {
-  "devDependencies": {
+  "dependencies": {
     "@tailwindcss/cli": "^4.0.0",
     "@tailwindcss/typography": "^0.5.16",
     "bigger-picture": "^1.1.19",
-    "buffer": "^6.0.3",
+    "htmx.org": "^2.0.4",
+    "idiomorph": "^0.7.3",
     "parcel": "^2.15.2",
+    "tailwindcss": "^4.0.0"
+  },
+  "devDependencies": {
+    "buffer": "^6.0.3",
     "prettier": "^3.4.2",
     "prettier-plugin-jinja-template": "^2.0.0",
     "process": "^0.11.10",
-    "remark-parse": "^11.0.0",
-    "tailwindcss": "^4.0.0"
-  },
-  "dependencies": {
-    "htmx.org": "^2.0.4",
-    "idiomorph": "^0.7.3"
+    "remark-parse": "^11.0.0"
   }
 }
