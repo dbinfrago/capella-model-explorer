@@ -43,7 +43,7 @@ def _install_npm_pkgs() -> None:
         maxtime = datetime.datetime.max.replace(tzinfo=datetime.UTC)
         packages_ts = min(
             _get_file_timestamp("package.json") or maxtime,
-            _get_file_timestamp("package-lock.json") or maxtime,
+            _get_file_timestamp("pnpm-lock.yaml") or maxtime,
         )
         if packages_ts < modules_ts:
             return
