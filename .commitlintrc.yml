@@ -16,4 +16,4 @@ rules:
       [build, chore, ci, docs, feat, fix, merge, perf, refactor, revert, test],
     ]
 extends:
-  - '@commitlint/config-conventional'
+  - "@commitlint/config-conventional"

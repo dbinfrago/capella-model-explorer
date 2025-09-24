@@ -1,9 +1,9 @@
 {#
-    Copyright DB InfraGO AG and contributors
-    SPDX-License-Identifier: Apache-2.0
+  Copyright DB InfraGO AG and contributors
+  SPDX-License-Identifier: Apache-2.0
 
-    ?? validate layer only
-    ?? filter val resultsby layer
+  ?? validate layer only
+  ?? filter val resultsby layer
 #}
 {% from 'common_macros.html.j2' import linked_name_with_icon %}
 {%- set results = model.sa.validation.validate() -%}
