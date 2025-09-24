@@ -53,6 +53,7 @@ dev = [
   "coverage>=7.10.7",
   "docformatter[tomli]==1.7.7",
   "mypy==1.18.2",
+  "mypypp==0.1.1",
   "pre-commit>=4.3.0",
   "pre-commit-uv>=4.1.5",
   "pylsp-mypy>=0.7.0",
@@ -94,6 +95,7 @@ no_implicit_optional = true
 show_error_codes = true
 warn_redundant_casts = true
 warn_unreachable = true
+plugins = ["mypypp.deprecated"]
 python_version = "3.11"
 
 [[tool.mypy.overrides]]
