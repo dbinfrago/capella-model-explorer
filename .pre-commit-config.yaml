@@ -107,7 +107,7 @@ repos:
       - id: prettier
         name: prettier
         language: system
-        entry: node_modules/.bin/prettier --write
+        entry: node_modules/.bin/prettier --write --list-different
         types_or: [css, javascript, jinja, markdown]
   - repo: local # ruff
     hooks:
