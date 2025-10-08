@@ -54,7 +54,7 @@
 
 <h2>3 System Capabilities</h2>
 {% set capabilities = model.sa.all_capabilities %}
-{{ render_capability_section(capabilities) | safe }}
+{{ render_capability_section(object, capabilities) | safe }}
 
 <h2>4 System Boundary</h2>
 <p>
