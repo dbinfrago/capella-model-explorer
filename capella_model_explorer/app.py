@@ -154,6 +154,9 @@ def rendered_report(template_id: str, model_element_uuid: str = "") -> t.Any:
             diff_data={},
             object_diff={},
         )
+        processed_html, toc_items = reports.process_html_with_toc(
+            rendered_template
+        )
     except Exception:
         elem_repr = ""
         try:
@@ -176,13 +179,20 @@ def rendered_report(template_id: str, model_element_uuid: str = "") -> t.Any:
             ),
             cls="dark:text-neutral-100 grow content-center",
         )
+
+    toc_button_script = "document.getElementById('toc-toggle-button').classList.remove('hidden');"
     content = ft.Div(
-        fh.NotStr(rendered_template),
+        ft.Div(
+            fh.NotStr(processed_html),
+            cls="prose svg-display dark:prose-invert max-w-4xl w-full",
+        ),
+        components.table_of_contents(toc_items) if toc_items else None,
         ft.Script(
             "document.getElementById('root').classList.remove('h-screen');"
             "document.getElementById('print-button').classList.remove('hidden');"
+            + (toc_button_script * bool(toc_items))
         ),
-        cls="prose svg-display dark:prose-invert",
+        cls="flex flex-row w-full",
     )
     return (
         content,

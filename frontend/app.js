@@ -19,3 +19,24 @@ window.openDiagramViewer = function (svgContainer) {
   }
   lightbox.open({ items: [svgContainer], el: svgContainer });
 };
+
+window.toggleToc = function () {
+  const toc = document.getElementById("table-of-contents");
+  if (!toc) return;
+
+  const isOpen = !toc.classList.contains("translate-x-full");
+  toc.classList.toggle("translate-x-full", isOpen);
+  toc.classList.toggle("translate-x-0", !isOpen);
+};
+
+const xlMediaQuery = window.matchMedia("(min-width: 1280px)");
+function resetTocOnResize() {
+  const toc = document.getElementById("table-of-contents");
+  if (!toc) return;
+
+  toc.classList.toggle("translate-x-full", !xlMediaQuery.matches);
+  toc.classList.toggle("translate-x-0", xlMediaQuery.matches);
+}
+
+window.addEventListener("resize", resetTocOnResize);
+document.addEventListener("DOMContentLoaded", resetTocOnResize);
