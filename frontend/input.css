@@ -116,3 +116,36 @@ html.dark .bp-inner img {
 .html-content li a {
   @apply italic text-gray-500 hover:underline;
 }
+
+.toc-link {
+  position: relative;
+  padding-left: 0.75rem;
+}
+
+.toc-link::before {
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 0;
+  background: var(--color-primary-600);
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toc-link.active {
+  color: var(--color-primary-600);
+
+  html.dark & {
+    color: var(--color-primary-400);
+  }
+
+  &::before {
+    height: 70%;
+  }
+}
+
+html.dark .toc-link::before {
+  background: var(--color-primary-400);
+}

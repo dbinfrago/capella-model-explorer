@@ -19,6 +19,8 @@ import jinja2
 import markupsafe
 import pydantic as p
 import yaml
+from lxml import etree
+from lxml import html as lxml_html
 
 import capella_model_explorer
 import capella_model_explorer.constants as c
@@ -359,3 +361,63 @@ def compute_cache_key(template: Template | None, /) -> str:
     else:
         data["launch-id"] = c.LAUNCH_ID
     return json.dumps(data)
+
+
+def process_html_with_toc(html_content: str) -> tuple[str, list[dict]]:
+    """Process HTML to extract TOC and inject IDs in a single pass."""
+    if not html_content.strip():
+        return html_content, []
+
+    try:
+        doc = lxml_html.fromstring(html_content)
+    except etree.XMLSyntaxError:
+        try:
+            doc = lxml_html.fragment_fromstring(
+                html_content, create_parent=True
+            )
+        except Exception:
+            logger.warning("Cannot parse template result for TOC processing")
+            return html_content, []
+
+    toc_items: list[dict[str, t.Any]] = []
+    heading_counter: dict[str, int] = {}
+
+    headings = doc.xpath(".//h1 | .//h2 | .//h3 | .//h4 | .//h5 | .//h6")
+    assert isinstance(headings, list)
+
+    for heading in headings:
+        if not isinstance(heading, lxml_html.HtmlElement):
+            continue
+        text = heading.text_content().strip()
+        if not text:
+            continue
+
+        existing_id = heading.get("id", "")
+
+        if not existing_id:
+            slug = re.sub(r"[^\w\s-]", "", text.lower())
+            slug = re.sub(r"[-\s]+", "-", slug).strip("-")
+
+            if not slug:
+                slug = f"heading-{len(toc_items)}"
+
+            count = heading_counter.get(slug, 0)
+            heading_counter[slug] = count + 1
+
+            if count > 0:
+                slug = f"{slug}-{count}"
+
+            existing_id = slug
+            heading.set("id", existing_id)
+
+        assert isinstance(heading.tag, str)
+        toc_items.append(
+            {
+                "level": int(heading.tag[1:]),
+                "text": text,
+                "id": existing_id,
+            }
+        )
+
+    processed_html = lxml_html.tostring(doc, encoding="unicode", method="html")
+    return processed_html, toc_items

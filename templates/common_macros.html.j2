@@ -348,16 +348,15 @@
 
 {% macro display_property_label(object, property) %}
   <p>
-    <b>{{ property.name }}</b> : {% set type = None %}
-    {% if "type" in property.__dir__() %}
-      {% set type = property.type %}
-    {% elif "abstract_type" in property.__dir__() %}
+    <b>{{ property.name }}:</b>
+    {% set type = property.type %}
+    {% if type is undefined %}
       {% set type = property.abstract_type %}
     {% endif %}
-    {% if type %}
-      {{ linked_name_with_icon(type) | safe }}
-    {% else %}
+    {% if type is undefined or type is none %}
       <span style="color:red">No type defined</span>
+    {% else %}
+      {{ linked_name_with_icon(type) | safe }}
     {% endif %}
     {% if property.min_card.value == property.max_card.value and property.max_card.value == "1" %}
 

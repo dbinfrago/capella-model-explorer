@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import base64
+import importlib.resources as imr
 import json
 import typing as t
 
@@ -256,7 +257,14 @@ def navbar(template: reports.Template | None, element: str | None) -> ft.Nav:
             onclick="window.print();",
             id="print-button",
             title="Print report",
-            cls="hidden hover:cursor-pointer",
+            cls="hidden cursor-pointer",
+        ),
+        ft.Button(
+            icons.toc_icon(),
+            id="toc-toggle-button",
+            title="Toggle table of contents",
+            onclick="toggleToc()",
+            cls="hidden xl:hidden cursor-pointer",
         ),
         ft.Button(
             icons.theme_system(id="dark-mode-icon-system"),
@@ -613,15 +621,16 @@ def template_container(content: t.Any) -> ft.Div:
             "dark:border-neutral-700",
             "dark:shadow-neutral-700",
             "min-h-full",
-            "html-content",  # copied from v0.2.3
-            "items-center",
+            "html-content",
+            "flex",
+            "items-start",
             "justify-center",
             "p-4",
             "print:bg-white",
             "print:m-0",
             "print:ml-6",
             "print:p-0",
-            "svg-display",  # copied from v0.2.3
+            "svg-display",
             "template-container",
             "w-full",
         ),
@@ -674,6 +683,106 @@ def template_sidebar(
             "top-0",
         ),
         hx_swap_oob=oob and "morph",
+    )
+
+
+def table_of_contents(toc_items: list[dict]) -> ft.Div:
+    if not toc_items:
+        return ft.Div()
+
+    return ft.Div(
+        ft.Div(
+            ft.H3(
+                "Table of Contents",
+                cls=(
+                    "text-lg",
+                    "font-semibold",
+                    "text-neutral-800",
+                    "dark:text-neutral-300",
+                    "mb-3",
+                    "px-3",
+                    "pt-4",
+                    "xl:pt-0",
+                ),
+            ),
+            ft.Nav(
+                ft.Ul(
+                    *(toc_item(item) for item in toc_items),
+                    cls="space-y-1",
+                ),
+                cls="overflow-y-auto xl:max-h-[calc(100vh-16rem)]",
+            ),
+            cls="xl:sticky xl:top-4 h-full xl:h-auto",
+        ),
+        ft.Script(
+            imr.read_text(__name__.rsplit(".", 1)[0], "table-of-contents.js")
+        ),
+        id="table-of-contents",
+        cls=(
+            "fixed",
+            "top-12",
+            "right-0",
+            "bottom-0",
+            "w-80",
+            "bg-white",
+            "dark:bg-neutral-900",
+            "border-l",
+            "border-neutral-300",
+            "dark:border-neutral-700",
+            "shadow-lg",
+            "transform",
+            "translate-x-full",
+            "xl:translate-x-0",
+            "transition-transform",
+            "duration-300",
+            "z-40",
+            "overflow-y-auto",
+            "pl-4",
+            "xl:relative",
+            "xl:transform-none",
+            "xl:shadow-none",
+            "xl:border-none",
+            "xl:bg-transparent",
+            "xl:dark:bg-transparent",
+            "xl:w-80",
+            "xl:top-0",
+            "xl:overflow-visible",
+            "xl:pl-6",
+            "shrink-0",
+            "print:hidden",
+        ),
+    )
+
+
+def toc_item(item: dict) -> ft.Li:
+    indent_map = {
+        1: "ml-0",
+        2: "ml-3",
+        3: "ml-6",
+        4: "ml-9",
+        5: "ml-12",
+        6: "ml-15",
+    }
+    return ft.Li(
+        ft.A(
+            item["text"],
+            href=f"#{item['id']}",
+            cls=(
+                "block",
+                "text-sm",
+                "text-neutral-700",
+                "dark:text-neutral-400",
+                "hover:text-primary-600",
+                "dark:hover:text-primary-400",
+                "py-1.5",
+                "rounded",
+                "transition-colors",
+                "duration-300",
+                "toc-link",
+                indent_map[item["level"]],
+            ),
+            data_target=item["id"],
+        ),
     )
 
 

@@ -289,6 +289,30 @@ def report() -> svg.Svg:
     )
 
 
+def toc_icon() -> svg.Svg:
+    return svg.Svg(
+        svg.Text(
+            "TOC",
+            x="50%",
+            y="50%",
+            dominant_baseline="middle",
+            text_anchor="middle",
+            font_size="10",
+            font_weight="bold",
+            fill="currentColor",
+        ),
+        width="24",
+        height="24",
+        viewBox="0 0 24 24",
+        cls=(
+            "dark:hover:text-neutral-100",
+            "dark:text-neutral-400",
+            "hover:text-neutral-50",
+            "text-neutral-300",
+        ),
+    )
+
+
 def spinner() -> svg.Svg:
     return svg.Svg(
         svg.Circle(
