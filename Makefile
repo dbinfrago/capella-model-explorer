@@ -24,6 +24,7 @@ serve: .venv bundle #: Run a local development server
 
 $(BUNDLE_DIR): node_modules $(COMPILED_CSS) $(shell find frontend -name '*.js' -o -name '*.css')
 	rm -rf $@
+	pnpm exec tailwindcss --input frontend/input.css --output frontend/compiled.css
 	pnpm exec parcel build frontend/app.js --dist-dir $@
 
 node_modules: package.json pnpm-lock.yaml
