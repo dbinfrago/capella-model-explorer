@@ -109,8 +109,8 @@ class Template(p.BaseModel):
                 objects = [objects]
             elif not isinstance(objects, m.ElementList):
                 raise ValueError(
-                    f"Expected a list of model objects or a single model object"
-                    f" for {attr!r} of the model, got {objects!r}"
+                    f"Expected a list of model objects or a single model object "
+                    f"for {attr!r} of the model, got {objects!r}"
                 )
         elif below and obj_type:
             getter = operator.attrgetter(below)
@@ -236,9 +236,9 @@ def finalize(markup: t.Any) -> object:
     if isinstance(markup, m.AbstractDiagram):
         logger.warning(
             (
-                "Synchronously rendering diagram inline, which is slow"
-                " - please update the template to use 'render_diagram()' instead:"
-                " %r (%s)"
+                "Synchronously rendering diagram inline, which is slow - "
+                "please update the template to use 'render_diagram()' instead: "
+                "%r (%s)"
             ),
             markup.name,
             markup.uuid,
@@ -248,9 +248,9 @@ def finalize(markup: t.Any) -> object:
     if isinstance(markup, capellambse.diagram.Diagram):
         logger.warning(
             (
-                "Placing synchronously rendered diagram inline, which is slow"
-                " - please update the template to use 'render_diagram()' instead:"
-                " %r (%s)"
+                "Placing synchronously rendered diagram inline, which is slow - "
+                "please update the template to use 'render_diagram()' instead: "
+                "%r (%s)"
             ),
             markup.name,
             markup.uuid,
@@ -301,13 +301,13 @@ def diagram_placeholder(
         diag = getattr(parent, attr)
     except AttributeError:
         raise TypeError(
-            f"Parent object ({type(parent).__name__})"
-            f" does not have an attribute {attr!r}"
+            f"Parent object ({type(parent).__name__}) "
+            f"does not have an attribute {attr!r}"
         ) from None
     if not isinstance(diag, capellambse.model.AbstractDiagram):
         raise TypeError(
-            f"Expected a diagram at {type(parent).__name__}.{attr},"
-            f" got {type(diag).__name__}"
+            f"Expected a diagram at {type(parent).__name__}.{attr}, "
+            f"got {type(diag).__name__}"
         )
 
     url = app.app.url_path_for("render_diagram", parent=parent.uuid, attr=attr)

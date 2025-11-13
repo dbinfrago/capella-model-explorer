@@ -179,12 +179,11 @@
   {{ describe_availability_conditions(object) | safe }}
   <h2>Context Diagram</h2>
   <p>
-    The diagram below provides an overview over the functional context:
-    functions on the left provide functional inputs to the function of
-    interest, functions on the right consume the outputs of the function of
-    interest. The system is responsible for the functions with the green
-    background. Functions with the blue background are allocated to external
-    actors.
+    The diagram below provides an overview of the functional context: functions
+    on the left provide functional inputs to the function of interest,
+    functions on the right consume the outputs of the function of interest. The
+    system is responsible for the functions with the green background.
+    Functions with the blue background are allocated to external actors.
   </p>
 
   {{ render_diagram(object, "context_diagram") }}

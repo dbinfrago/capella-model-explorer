@@ -224,9 +224,9 @@ def _find_exe(name: str) -> str:
     envvar="CME_LOG_CONFIG",
     default=None,
     help=(
-        "A JSON-encoded log config dictionary,"
-        " as understood by 'logging.config.dictConfig()'."
-        " If passed, other '--log-*' arguments are ignored."
+        "A JSON-encoded log config dictionary, "
+        "as understood by 'logging.config.dictConfig()'. "
+        "If passed, other '--log-*' arguments are ignored."
     ),
 )
 @click.version_option(
@@ -361,8 +361,8 @@ def main(
     default=c.Defaults.live_mode,
     show_default=True,
     help=(
-        "Control automatic reloading of templates on changes."
-        " Ignored in '--dev' mode, where it is always enabled."
+        "Control automatic reloading of templates on changes. "
+        "Ignored in '--dev' mode, where it is always enabled."
     ),
 )
 @click.option(

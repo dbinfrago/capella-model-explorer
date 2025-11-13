@@ -19,7 +19,7 @@
 - template: system-actor.html.j2
   id: system-actors
   name: System Actors
-  description: define who the system in interacts with and why
+  description: define who the system interacts with and why
   scope:
     type: SystemComponent
     below: sa

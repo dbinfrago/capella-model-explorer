@@ -19,10 +19,10 @@ from capella_model_explorer import core
 LAUNCH_ID = str(uuid.uuid4())
 """A unique ID that identifies this launch of the model explorer.
 
-This ID is used to invalidate client side caches when re-launching the
+This ID is used to invalidate client-side caches when re-launching the
 server, in cases where we can't reliably ensure that the model hasn't
-changed between launches. Example include models loaded from local files
-(not backed by a Git repository) or remote plain HTTP servers.
+changed between launches. Examples include models loaded from local
+files (not backed by a Git repository) or remote plain HTTP servers.
 """
 
 CACHE_MAX_AGE = 365 * 24 * 60 * 60  # 1 year

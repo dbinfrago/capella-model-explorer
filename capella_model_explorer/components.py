@@ -594,14 +594,9 @@ def template_category(
                 "auto-rows-auto",
                 "content-around",
                 "grid",
+                "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3",
                 "grid-flow-row",
                 "pt-4",
-                (
-                    " sm:grid-cols-1"
-                    " md:grid-cols-1"
-                    " lg:grid-cols-2"
-                    " xl:grid-cols-3"
-                ),
             ),
         ),
         id="template-category",
