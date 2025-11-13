@@ -47,9 +47,9 @@
 {% endmacro -%}
 
 <body>
-  <h1>Modeling Rules Compliance Report for System Analysis Layer</h1>
+  <h1>Modelling Rules Compliance Report for System Analysis Layer</h1>
   <p>
-    The report provides an assessment of adherence to Modeling Rules and Best
+    The report provides an assessment of adherence to Modelling Rules and Best
     Practices by the contents of the System Analysis model layer.
   </p>
 
@@ -97,7 +97,7 @@
         <th rowspan="2">Reviewed objects</th>
         <th rowspan="2" width="90px">Total objects</th>
         <th colspan="{{ CATEGORIES | count }}">
-          Compliance to applicable modeling rules
+          Compliance to applicable modelling rules
         </th>
       </tr>
       <tr>
@@ -160,8 +160,8 @@
               {% if results %}
                 <p style="margin-left: 20px">
                   The following objects
-                  <b style="color: red;">failed to comply</b> with the modeling
-                  rule:
+                  <b style="color: red;">failed to comply</b> with the
+                  modelling rule:
                 </p>
                 <ul style="margin-left: 20px">
                   {%- for result in results -%}
@@ -172,7 +172,7 @@
             {% else %}
               <p>
                 All {{ rule_results | length }} objects are
-                <b style="color: green">compliant</b> to this modeling rule
+                <b style="color: green">compliant</b> to this modelling rule
               </p>
             {% endif %}
           </td>

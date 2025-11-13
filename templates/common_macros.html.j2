@@ -7,9 +7,9 @@
   {{ text[0] | upper }}{{ text[1:] }}
 {% endmacro %}
 
-{% macro show_compliance_to_modeling_rules(object) %}
+{% macro show_compliance_to_modelling_rules(object) %}
   {% if "validation" in object.__dir__() %}
-    <h2>Compliance to modeling rules</h2>
+    <h2>Compliance to modelling rules</h2>
     {% set results = object.validate() %}
     {% if results %}
       <table>
@@ -49,7 +49,7 @@
       </table>
     {% else %}
       <p>
-        Could not evaluate compliance of the object to the current modeling
+        Could not evaluate compliance of the object to the current modelling
         rules set.
       </p>
     {% endif %}
@@ -132,7 +132,7 @@
     </p>
   {% endif %}
   {% if not hide_rules_check %}
-    {{ show_compliance_to_modeling_rules(object) | safe }}
+    {{ show_compliance_to_modelling_rules(object) | safe }}
   {% endif %}
 {% endmacro %}
 
@@ -258,13 +258,13 @@
   {% if (realized_objects | length > 0 or realizing_objects | length > 0) and "realization_view" in object.__dir__() %}
     <p>
       The figure below provides an overview of objects that "{{ object.name }}"
-      realizes but also those that realize "{{ object.name }}"
+      realises but also those that realise "{{ object.name }}"
     </p>
     {{ render_diagram(object, "realization_view") }}
   {% endif %}
   {% if show_upper %}
     {% if realized_objects %}
-      <p>{{ object.name }} realizes the following objects:</p>
+      <p>{{ object.name }} realises the following objects:</p>
       <p></p>
       <ul>
         {%- for obj in realized_objects -%}
@@ -275,12 +275,12 @@
       </ul>
     {%- else -%}
       <p style="color: red;">
-        {{ first_upper(object.name) }} doesn't seem to realize any object
+        {{ first_upper(object.name) }} doesn't seem to realise any object
       </p>
     {%- endif -%}
   {% endif %}
   {% if realizing_objects %}
-    <p>{{ object.name }} is realized by the following objects:</p>
+    <p>{{ object.name }} is realised by the following objects:</p>
     <ul>
       {%- for obj in realizing_objects -%}
         <li style="display: block;">
@@ -290,7 +290,7 @@
     </ul>
   {%- else -%}
     <p style="color: red;">
-      {{ first_upper(object.name) }} doesn't seem to be realized by any object
+      {{ first_upper(object.name) }} doesn't seem to be realised by any object
     </p>
   {% endif %}
 {%- endmacro -%}

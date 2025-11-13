@@ -47,8 +47,8 @@
     type: FunctionalChain
 - template: mod-rules-compliance.html.j2
   id: mod-rules-compliance
-  name: SA Modeling Rules Compliance Report
-  description: Evaluates compliance of the system analysis model with the modeling rules.
+  name: SA Modelling Rules Compliance Report
+  description: Evaluates compliance of the system analysis model with the modelling rules.
   single: true
   isExperimental: true
   isDocument: true
