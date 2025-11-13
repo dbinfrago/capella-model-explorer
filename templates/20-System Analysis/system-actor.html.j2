@@ -78,20 +78,20 @@
 <h2>Traceability</h2>
 {% if object.realized_entities %}
   <p>
-    {{ object.name }} realizes the following objects:&nbsp;
+    {{ object.name }} realises the following objects:&nbsp;
     {%- for obj in object.realized_entities -%}{{ typed_name(obj) | safe }};{%- endfor -%}
   </p>
 {% else %}
-  <p>{{ object.name }} doesn't seem to realize any operational entity</p>
+  <p>{{ object.name }} doesn't seem to realise any operational entity</p>
 {% endif %}
 {% if object.realizing_logical_components %}
   <p>
-    {{ object.name }} is realized by the following objects:&nbsp;
+    {{ object.name }} is realised by the following objects:&nbsp;
     {%- for obj in object.realizing_logical_components -%}{{ typed_name(obj) | safe }};{%- endfor -%}
   </p>
 {% else %}
   <p>
-    {{ object.name }} doesn't seem to be realized by any logical components or
+    {{ object.name }} doesn't seem to be realised by any logical components or
     actors
   </p>
 {% endif %}
