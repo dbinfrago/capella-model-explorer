@@ -42,12 +42,12 @@ dependencies = [
   "uvicorn>=0.38.0,<0.39",
 ]
 
+[project.scripts]
+cme = "capella_model_explorer.__main__:main"
+
 [project.urls]
 Homepage = "https://github.com/dbinfrago/capella-model-explorer"
 Documentation = "https://dbinfrago.github.io/capella-model-explorer"
-
-[project.scripts]
-cme = "capella_model_explorer.__main__:main"
 
 [dependency-groups]
 dev = [
@@ -147,7 +147,7 @@ extend-select = [
   "RUF",    # ruff
   "SIM",    # flake8-simplify
   "TC005",  # "Found empty type-checking block"
-  "T1",     # flake8-debugger
+  "T10",    # flake8-debugger
   "UP",     # pyupgrade
   "YTT",    # flake8-2020
 ]

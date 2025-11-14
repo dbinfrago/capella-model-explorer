@@ -18,6 +18,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          filter: tree:0
       - name: Install commitlint
         run: npm install @commitlint/cli @commitlint/config-conventional
       - name: Validate commit messages
@@ -46,6 +47,7 @@ jobs:
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
           body: |
             The pull request does not conform to the conventional commit specification. Please ensure that your commit messages follow the spec: <https://www.conventionalcommits.org/>.
             We also strongly recommend that you set up your development environment with pre-commit, as described in our [CONTRIBUTING guidelines](https://github.com/dbinfrago/capella-model-explorer/blob/master/CONTRIBUTING.md). This will run all the important checks right before you commit your changes, and avoids lengthy CI wait time and round trips.
@@ -61,4 +63,3 @@ jobs:
             docs(user): Add model creation workflow
             feat: Add a monitoring dashboard
             ```
-          edit-mode: replace
