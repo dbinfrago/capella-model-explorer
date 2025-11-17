@@ -40,7 +40,8 @@ RUN curl -fsSL https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(whi
 COPY . /build
 
 WORKDIR /build
-RUN uv run cme build
+RUN git restore -- Dockerfile && \
+  uv run cme build
 
 RUN uv venv /app && \
   uv pip compile pyproject.toml >requirements.txt && \
