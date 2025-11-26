@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 2
 requires-python = ">=3.11, <3.14"
 
 [[package]]
@@ -235,7 +235,7 @@ docs = [
 [package.metadata]
 requires-dist = [
     { name = "capellambse", specifier = ">=0.7.12,<0.8" },
-    { name = "capellambse-context-diagrams", specifier = ">=0.7.20,<0.8" },
+    { name = "capellambse-context-diagrams", specifier = ">=0.7.23,<0.8" },
     { name = "click", specifier = ">=8.3.0,<9" },
     { name = "jinja2", specifier = ">=3.1.6,<4" },
     { name = "logfmter", specifier = ">=0.0.11" },
@@ -301,7 +301,7 @@ wheels = [
 
 [[package]]
 name = "capellambse-context-diagrams"
-version = "0.7.20"
+version = "0.7.23"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "capellambse" },
@@ -309,9 +309,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b5/a8/56fb4ad269410fe3372643c102f7b11277bb53a0f07061f4762edd834174/capellambse_context_diagrams-0.7.20.tar.gz", hash = "sha256:7fee7ea379dc70c1a2448d01d283067df01ba243df8ffcb0e24c6bfe75ed7170", size = 550520, upload-time = "2025-10-23T08:14:02.795Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/98/0d/a110a426d7f575f886f0711f9a08d3425b2233b421d689a3854a53df2b1f/capellambse_context_diagrams-0.7.23.tar.gz", hash = "sha256:01989fea991a96100251f9536d1f4c4cdb7a82fb2130d07e24c9ae58601ed0ed", size = 551568, upload-time = "2025-11-20T18:00:27.69Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3f/fb/bff97fe4d3487549529a6f0e9f244e4f445b70950f27c5f9ea366bfafe56/capellambse_context_diagrams-0.7.20-py3-none-any.whl", hash = "sha256:df6a6063ec0f0b44b0ac86cc81846d1c3764d2e5a34dc245d39aaa1d1e699ccd", size = 70686, upload-time = "2025-10-23T08:14:01.225Z" },
+    { url = "https://files.pythonhosted.org/packages/2b/1d/4dc95dca246878d63efb66b0dd2e777013ffbf623e9a95af2b240aad6602/capellambse_context_diagrams-0.7.23-py3-none-any.whl", hash = "sha256:74194a99348d2149deee3adc217dacf7235bbae1264c265b1bdede2eeef57b92", size = 71176, upload-time = "2025-11-20T18:00:26.216Z" },
 ]
 
 [[package]]
