@@ -31,15 +31,15 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "capellambse-context-diagrams>=0.7.23,<0.8",
-  "capellambse>=0.7.12,<0.8",
-  "click>=8.3.0,<9",
-  "jinja2>=3.1.6,<4",
+  "capellambse-context-diagrams>=0.7.23",
+  "capellambse>=0.7.12",
+  "click>=8.3.1",
+  "jinja2>=3.1.6",
   "logfmter>=0.0.11",
-  "lxml>=6.0.2,<7",
-  "prometheus-client>=0.23.1,<0.24",
-  "python-fasthtml>=0.12.33,<0.13",
-  "uvicorn>=0.38.0,<0.39",
+  "lxml>=6.0.2",
+  "prometheus-client>=0.23.1",
+  "python-fasthtml>=0.12.35",
+  "uvicorn>=0.38.0",
 ]
 
 [project.scripts]
@@ -51,24 +51,24 @@ Documentation = "https://dbinfrago.github.io/capella-model-explorer"
 
 [dependency-groups]
 dev = [
-  "coverage>=7.11.0",
+  "coverage>=7.12.0",
   "docformatter[tomli]==1.7.7",
-  "mypy==1.18.2",
+  "mypy==1.19.0",
   "mypypp==0.1.1",
-  "pre-commit>=4.3.0",
+  "pre-commit>=4.5.0",
   "pre-commit-uv>=4.2.0",
   "pylsp-mypy>=0.7.0",
-  "pytest>=8.4.2",
+  "pytest>=9.0.1",
   "pytest-cov>=7.0.0",
   "python-dotenv>=1.2.1",
-  "python-lsp-server[rope]>=1.13.1",
+  "python-lsp-server[rope]>=1.13.2",
   "reuse==6.2.0",
-  "ruff==0.14.3",
+  "ruff==0.14.7",
   "types-pyyaml>=6.0.12.20250915",
-  "types-lxml==2025.8.25",
+  "types-lxml==2025.11.25",
 ]
 
-docs = ["furo>=2025.7.19", "sphinx>=8.2.3", "sphinx-copybutton>=0.5.2"]
+docs = ["furo>=2025.9.25", "sphinx>=8.2.3", "sphinx-copybutton>=0.5.2"]
 
 [tool.coverage.run]
 branch = true

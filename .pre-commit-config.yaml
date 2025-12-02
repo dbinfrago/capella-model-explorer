@@ -6,7 +6,7 @@ default_stages: [pre-commit, pre-merge-commit]
 minimum_pre_commit_version: 4.0.0
 repos:
   - repo: https://github.com/gitleaks/gitleaks.git
-    rev: v8.28.0
+    rev: v8.30.0
     hooks:
       - id: gitleaks
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -47,7 +47,7 @@ repos:
           - "#"
       - id: insert-license
         name: Insert CC0 license headers (shell-style comments)
-        files: '(?:^|/)(?:codeql-analysis.yml|dependabot.yml|pnpm-[^/]+\.yaml|\.(?:pre-commit-config.yaml|(?:git|helm|docker)ignore))$'
+        files: '(?:^|/)(?:codeql-analysis.yml|dependabot.yml|pnpm-[^/]+\.yaml|\.pre-commit-config.yaml|\.(?:git|helm|docker)ignore)$'
         args:
           - --detect-license-in-X-top-lines=15
           - --license-filepath
@@ -125,7 +125,7 @@ repos:
         types_or: [python, pyi, jupyter]
         require_serial: true
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.8
+    rev: v1.7.9
     hooks:
       - id: actionlint-docker
   - repo: local # mypy
