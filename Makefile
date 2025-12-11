@@ -7,22 +7,31 @@ BUNDLE_DIR := $(STATIC_DIR)/bundle
 INPUT_CSS := frontend/input.css
 COMPILED_CSS := frontend/compiled.css
 
+SOURCE_DIRS := frontend capella_model_explorer
+CSS_FILES := $(shell find $(SOURCE_DIRS) -name '*.css')
+JS_FILES := $(shell find $(SOURCE_DIRS) -name '*.js')
+PY_FILES := $(shell find $(SOURCE_DIRS) -name '*.py')
+
 export CME_MODEL ?= $(CAPELLA_MODEL)
 CME_HOST ?=
 CME_PORT ?=
 CME_TEMPLATES_DIR ?=
-CME_LIVE_MODE ?=
 CME_ROUTE_PREFIX ?=
+CME_WATCH_BUNDLE ?=
 CME_DEBUG_SPINNER ?=
 
 .PHONY: bundle
 bundle: $(BUNDLE_DIR) #: Build the app bundle
 
 .PHONY: serve
-serve: .venv bundle #: Run a local development server
+serve: .venv bundle #: Run the server locally
 	.venv/bin/cme run --skip-rebuild --model "$${CME_MODEL:?}"
 
-$(BUNDLE_DIR): node_modules $(COMPILED_CSS) $(shell find frontend -name '*.js' -o -name '*.css')
+.PHONY: dev
+dev: .venv bundle #: Run a local development server
+	.venv/bin/cme dev --model "$${CME_MODEL:?}"
+
+$(BUNDLE_DIR): node_modules $(COMPILED_CSS) $(CSS_FILES) $(JS_FILES) $(PY_FILES)
 	rm -rf $@
 	pnpm exec tailwindcss --input frontend/input.css --output frontend/compiled.css
 	pnpm exec parcel build frontend/app.js --dist-dir $@
@@ -47,7 +56,7 @@ lint: node_modules .venv #: Run all formatters and linters
 
 .PHONY: clean
 clean: #: Remove build artifacts
-	rm -rf $(BUNDLE_DIR)
+	rm -rf $(COMPILED_CSS) $(BUNDLE_DIR)
 
 .PHONY: really-clean
 really-clean: clean #: Remove build artifacts, tools and all data

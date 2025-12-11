@@ -34,7 +34,7 @@ CONFIG = fasthtml.starlette.Config(env_prefix="CME_")
 class Defaults:
     docker_image_name: t.Final[str] = "capella-model-explorer:latest"
     host: t.Final[str] = "0.0.0.0"
-    live_mode: bool = True
+    watch_bundle: bool = True
     model: t.Final[str] = (
         "git+https://github.com/DSD-DBS/Capella-IFE-sample.git"
     )
@@ -54,9 +54,6 @@ MODEL: str = CONFIG("MODEL", default=Defaults.model)
 PORT: int = CONFIG("PORT", cast=int, default=Defaults.port)
 PRIMARY_COLOR_HUE: int = CONFIG(
     "PRIMARY_COLOR_HUE", cast=int, default=Defaults.primary_color_hue
-)
-LIVE_MODE: t.Final[bool] = CONFIG(
-    "LIVE_MODE", cast=bool, default=Defaults.live_mode
 )
 
 ROUTE_PREFIX: t.Final[str] = CONFIG(

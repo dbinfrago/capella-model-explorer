@@ -30,7 +30,6 @@ logger = logging.getLogger(__name__)
 async def lifespan(_):
     logger.info("Configuration:")
     logger.info("\tRoute prefix: '%s'", c.ROUTE_PREFIX)
-    logger.info("\tLive mode: %s", c.LIVE_MODE)
     logger.info("\tHost: '%s'", c.HOST)
     logger.info("\tCapella model: '%s'", c.MODEL)
     logger.info("\tTemplates directory: '%s'", c.TEMPLATES_DIR)
@@ -67,17 +66,10 @@ class UpdateLastInteractionTimeMiddleware(
         return await call_next(request)
 
 
-if c.LIVE_MODE:
-    _app_cls = fh.FastHTMLWithLiveReload
-else:
-    _app_cls = fh.FastHTML
-
-
-app = _app_cls(
+app = fh.FastHTML(
     htmx=False,
     hdrs=c.HEADERS,
     key_fname=pathlib.Path(tempfile.gettempdir()) / ".sesskey",
-    live=c.LIVE_MODE,
     lifespan=lifespan,
     middleware=[
         starlette.middleware.Middleware(UpdateLastInteractionTimeMiddleware),
