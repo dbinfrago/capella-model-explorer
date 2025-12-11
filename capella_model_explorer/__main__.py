@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import datetime
 import importlib
 import json
@@ -62,7 +63,6 @@ def run_container(*, log_config: dict[str, t.Any]) -> None:
         "--rm",
         "-it",
         "--name=cme",
-        f"-eCME_LIVE_MODE={'1' if c.LIVE_MODE else '0'}",
         f"-eCME_PORT={c.PORT}",
         f"-eCME_ROUTE_PREFIX={c.ROUTE_PREFIX}",
         f"-eCME_LOG_CONFIG={json.dumps(log_config)}",
@@ -99,47 +99,8 @@ def run_local(*, rebuild: bool, log_config: dict[str, t.Any]) -> None:
         host=c.HOST,
         port=c.PORT,
         log_config=log_config,
-        reload=c.LIVE_MODE,
-        reload_dirs=str(c.TEMPLATES_DIR) if c.LIVE_MODE else None,
-        reload_excludes="git_askpass.py" if c.LIVE_MODE else None,
-        reload_includes="*.j2" if c.LIVE_MODE else None,
+        reload=False,
     )
-
-
-def run_local_dev(*, log_config: dict[str, t.Any]) -> None:
-    logger.info("Running the application locally with full reload...")
-    if not pathlib.Path(c.TEMPLATES_DIR).is_dir():
-        raise SystemExit(f"Templates directory not found: {c.TEMPLATES_DIR}")
-
-    bundlers = build_bundle(watch=True)
-    assert bundlers is not None
-    tailwind_proc, parcel_proc = bundlers
-    time.sleep(1)  # avoid direct uvicorn reload when css file is written
-
-    try:
-        with tailwind_proc, parcel_proc:
-            uvicorn.run(
-                app="capella_model_explorer.app:app",
-                host=c.HOST,
-                port=c.PORT,
-                log_config=log_config,
-                reload=True,
-                reload_dirs=".",
-                reload_excludes=[
-                    "git_askpass.py",
-                    "input.css",
-                    "compiled.css",
-                ],
-                reload_includes=[
-                    "*.css",
-                    "*.j2",
-                    "*.js",
-                    "*.py",
-                ],
-            )
-    except KeyboardInterrupt:
-        tailwind_proc.terminate()
-        parcel_proc.terminate()
 
 
 def build_bundle(
@@ -316,12 +277,88 @@ def main(
     help="Launch as a Docker container.",
 )
 @click.option(
-    "--dev",
-    is_flag=True,
+    "-h",
+    "--host",
+    envvar="CME_HOST",
+    default=c.Defaults.host,
     show_default=True,
-    help="Launch in development mode with full auto-reload."
-    " This option cannot be used together with --container.",
+    help="The hostname or IP address to bind to."
+    " Ignored when running with '--container'.",
 )
+@click.option(
+    "-p",
+    "--port",
+    envvar="CME_PORT",
+    default=c.Defaults.port,
+    show_default=True,
+    help="The port to listen on.",
+)
+@click.option(
+    "-m",
+    "--model",
+    envvar="CME_MODEL",
+    default=c.Defaults.model,
+    show_default=True,
+    help="The Capella model to load (file, URL or JSON string).",
+)
+@click.option(
+    "-t",
+    "--templates-dir",
+    envvar="CME_TEMPLATES_DIR",
+    default=str(c.Defaults.templates_dir.resolve()),
+    show_default=True,
+    help="The directory containing the templates.",
+)
+@click.option(
+    "--route-prefix",
+    envvar="CME_ROUTE_PREFIX",
+    default="",
+    show_default=True,
+    help="Add a prefix to all web routes."
+    f" (Note: this prefix does not apply to '{app.metrics.to()}').",
+)
+@click.option(
+    "--image",
+    envvar="CME_DOCKER_IMAGE_NAME",
+    default=c.Defaults.docker_image_name,
+    show_default=True,
+    help="The Docker image to use with '--container'.",
+)
+@click.option(
+    "--skip-rebuild/--no-skip-rebuild",
+    default=False,
+    help="Don't rebuild already existing assets.",
+)
+@click.pass_context
+def run(
+    ctx: click.Context,
+    /,
+    *,
+    container: bool,
+    host: str,
+    port: int,
+    model: str,
+    templates_dir: str,
+    route_prefix: str,
+    image: str,
+    skip_rebuild: bool,
+) -> None:
+    """Run the application in production mode."""
+    os.environ["CME_HOST"] = host
+    os.environ["CME_PORT"] = str(port)
+    os.environ["CME_MODEL"] = model
+    os.environ["CME_TEMPLATES_DIR"] = templates_dir
+    os.environ["CME_ROUTE_PREFIX"] = route_prefix
+    os.environ["CME_DOCKER_IMAGE_NAME"] = image
+    importlib.reload(c)
+
+    if container:
+        run_container(log_config=ctx.obj["log_config"])
+    else:
+        run_local(rebuild=not skip_rebuild, log_config=ctx.obj["log_config"])
+
+
+@main.command()
 @click.option(
     "-h",
     "--host",
@@ -356,14 +393,11 @@ def main(
     help="The directory containing the templates.",
 )
 @click.option(
-    "--live-mode/--no-live-mode",
-    envvar="CME_LIVE_MODE",
-    default=c.Defaults.live_mode,
+    "--watch-bundle/--no-watch-bundle",
+    envvar="CME_WATCH_BUNDLE",
+    default=c.Defaults.watch_bundle,
     show_default=True,
-    help=(
-        "Control automatic reloading of templates on changes. "
-        "Ignored in '--dev' mode, where it is always enabled."
-    ),
+    help="Watch CSS/JS files and automatically rebuild the frontend bundle.",
 )
 @click.option(
     "--route-prefix",
@@ -374,18 +408,6 @@ def main(
     f" (Note: this prefix does not apply to '{app.metrics.to()}').",
 )
 @click.option(
-    "--image",
-    envvar="CME_DOCKER_IMAGE_NAME",
-    default=c.Defaults.docker_image_name,
-    show_default=True,
-    help="The Docker image to use with '--container'.",
-)
-@click.option(
-    "--skip-rebuild/--no-skip-rebuild",
-    default=False,
-    help="Don't rebuild already existing assets.",
-)
-@click.option(
     "--debug-spinner",
     envvar="CME_DEBUG_SPINNER",
     is_flag=True,
@@ -393,44 +415,66 @@ def main(
     help="Keep the template loading spinner spinning until clicked",
 )
 @click.pass_context
-def run(
+def dev(
     ctx: click.Context,
     /,
     *,
-    container: bool,
-    dev: bool,
     host: str,
     port: int,
     model: str,
     templates_dir: str,
-    live_mode: bool,
+    watch_bundle: bool,
     route_prefix: str,
-    image: str,
-    skip_rebuild: bool,
     debug_spinner: bool,
 ) -> None:
-    """Run the application."""
+    """Run the application in development mode with auto-reload features."""
     os.environ["CME_HOST"] = host
     os.environ["CME_PORT"] = str(port)
     os.environ["CME_MODEL"] = model
     os.environ["CME_TEMPLATES_DIR"] = templates_dir
-    os.environ["CME_LIVE_MODE"] = "1" if live_mode else "0"
     os.environ["CME_ROUTE_PREFIX"] = route_prefix
-    os.environ["CME_DOCKER_IMAGE_NAME"] = image
     os.environ["CME_DEBUG_SPINNER"] = "01"[debug_spinner]
     importlib.reload(c)
+    if not pathlib.Path(c.TEMPLATES_DIR).is_dir():
+        raise SystemExit(f"Templates directory not found: {c.TEMPLATES_DIR}")
 
-    if container and dev:
-        raise click.UsageError(
-            "Options --container and --dev are mutually exclusive."
+    logger.info("Running locally in development mode")
+
+    with contextlib.ExitStack() as stack:
+        if watch_bundle:
+            bundlers = build_bundle(watch=True)
+            assert bundlers is not None
+
+            for b in bundlers:
+                stack.enter_context(b)
+
+            def terminate_bundlers() -> None:
+                assert bundlers is not None
+                for b in bundlers:
+                    b.terminate()
+
+            stack.callback(terminate_bundlers)
+            time.sleep(1)
+
+        uvicorn.run(
+            app="capella_model_explorer.app:app",
+            host=c.HOST,
+            port=c.PORT,
+            log_config=ctx.obj["log_config"],
+            reload=True,
+            reload_dirs=".",
+            reload_excludes=[
+                "git_askpass.py",
+                "input.css",
+                "compiled.css",
+            ],
+            reload_includes=[
+                "*.css",
+                "*.j2",
+                "*.js",
+                "*.py",
+            ],
         )
-
-    if container:
-        run_container(log_config=ctx.obj["log_config"])
-    elif dev:
-        run_local_dev(log_config=ctx.obj["log_config"])
-    else:
-        run_local(rebuild=not skip_rebuild, log_config=ctx.obj["log_config"])
 
 
 @main.command()
