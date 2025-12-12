@@ -51,19 +51,19 @@ Documentation = "https://dbinfrago.github.io/capella-model-explorer"
 
 [dependency-groups]
 dev = [
-  "coverage>=7.12.0",
+  "coverage>=7.13.0",
   "docformatter[tomli]==1.7.7",
   "mypy==1.19.0",
   "mypypp==0.1.1",
   "pre-commit>=4.5.0",
   "pre-commit-uv>=4.2.0",
   "pylsp-mypy>=0.7.0",
-  "pytest>=9.0.1",
+  "pytest>=9.0.2",
   "pytest-cov>=7.0.0",
   "python-dotenv>=1.2.1",
-  "python-lsp-server[rope]>=1.13.2",
+  "python-lsp-server[rope]>=1.14.0",
   "reuse==6.2.0",
-  "ruff==0.14.7",
+  "ruff==0.14.9",
   "types-pyyaml>=6.0.12.20250915",
   "types-lxml==2025.11.25",
 ]
