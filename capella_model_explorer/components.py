@@ -6,13 +6,17 @@ from __future__ import annotations
 import base64
 import importlib.resources as imr
 import json
+import logging
 import typing as t
 
-from fasthtml import ft, svg
+from fasthtml import common as fh
+from fasthtml import ft
 
 import capella_model_explorer
 from capella_model_explorer import app, icons, reports, state
 from capella_model_explorer import constants as c
+
+logger = logging.getLogger(__name__)
 
 GITHUB_URL = "https://github.com/DSD-DBS/capella-model-explorer"
 
@@ -29,56 +33,11 @@ def application_shell(
             ft.Main(
                 *content,
                 id="root",
-                cls=(
-                    "grow",
-                    "w-full",
-                    "overflow-y-auto",
-                ),
+                cls="responsive",
             ),
             # placeholder for script injection per outerHTML swap
             ft.Script(id="script"),
-            cls=(
-                "bg-neutral-100",
-                "dark:bg-neutral-900",
-                "flex",
-                "flex-col",
-                "h-screen",
-                "min-h-screen",
-                "print:h-auto",
-                "print:min-h-auto",
-            ),
             hx_ext="morph",
-        ),
-    )
-
-
-def breadcrumb(*, label: str, url: str) -> ft.Li:
-    return (
-        ft.Li(
-            ft.Div(
-                svg.Svg(
-                    svg.Path(d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"),
-                    viewbox="0 0 24 44",
-                    preserveaspectratio="none",
-                    aria_hidden="true",
-                    cls="h-full w-6 stroke-1 stroke-primary-400 dark:stroke-neutral-700",
-                ),
-                ft.A(
-                    label,
-                    href=url,
-                    cls=(
-                        "dark:hover:text-neutral-100",
-                        "dark:text-neutral-400",
-                        "font-medium",
-                        "ml-4",
-                        "hover:text-neutral-50",
-                        "text-neutral-300",
-                        "text-sm",
-                    ),
-                ),
-                cls="flex items-center",
-            ),
-            cls="flex",
         ),
     )
 
@@ -94,24 +53,21 @@ def breadcrumbs(
 
     if template is not None:
         components.append(
-            ft.Li(
-                ft.Div(
-                    ft.A(
-                        icons.home(),
-                        ft.Span("Home", cls="sr-only"),
-                        href=app.app.url_path_for("main_home"),
-                        hx_get=app.app.url_path_for("main_home"),
-                        hx_target="#root",
-                        hx_push_url="true",
-                    ),
-                    cls="flex items-center",
-                ),
-                cls="flex",
+            ft.A(
+                ft.I("home"),
+                cls="button circle transparent",
+                href=app.app.url_path_for("main_home"),
+                hx_get=app.app.url_path_for("main_home"),
+                hx_target="#root",
+                hx_push_url="true",
             )
         )
 
         url = app.app.url_path_for("template_page", template_id=template.id)
-        components.append(breadcrumb(label=template.name, url=url))
+        components.append(ft.I("chevron_forward"))
+        components.append(
+            ft.A(template.name, href=url, cls="button transparent")
+        )
 
     if element_id is not None:
         assert template is not None, "Model element passed without template"
@@ -121,99 +77,62 @@ def breadcrumbs(
             template_id=template.id,
             model_element_uuid=element_id,
         )
-        components.append(breadcrumb(label=element.name, url=url))
+        components.append(ft.I("chevron_forward"))
+        components.append(
+            ft.A(element.name, href=url, cls="button transparent")
+        )
 
     return ft.Nav(
-        ft.Ol(
-            *components,
-            role="list",
-            cls="flex space-x-4 rounded-md px-6",
-        ),
+        *components,
         id="breadcrumbs",
+        cls="row",
         aria_label="Breadcrumb",
-        cls="flex grow",
         **({"hx_swap_oob": "true"} if oob else {}),
     )
 
 
-def model_information() -> ft.Div:
+def model_information() -> ft.Article:
     """Render the model information including the badge."""
     badge = "data:image/svg+xml;base64," + base64.standard_b64encode(
         state.model.description_badge.encode("utf-8")
     ).decode("ascii")
-    return ft.Div(
-        ft.H1(state.model.name, cls="text-xl"),
-        ft.P(
-            f"Capella version: {state.model.info.capella_version}",
-        ),
+    return ft.Article(
+        ft.H4(state.model.name),
+        ft.P(f"Capella version: {state.model.info.capella_version}"),
         ft.Img(
             src=badge,
             alt="Model description badge",
             cls="object-scale-down",
         ),
-        cls=(
-            "bg-white",
-            "dark:bg-neutral-800/50",
-            "dark:shadow-none",
-            "dark:text-neutral-400",
-            "flex",
-            "flex-col",
-            "max-w-full",
-            "m-2",
-            "mt-4",
-            "p-4",
-            "place-items-center",
-            "rounded-lg",
-            "shadow-primary-500",
-            "shadow-xs",
-            "svg-display",
-            "text-center",
-            "text-neutral-700",
-        ),
+        cls="no-elevate center-align",
     )
 
 
 def model_object_button(
     *, template: reports.Template, model_element: dict, selected: bool = False
 ) -> ft.A:
+    if state.show_uuids:
+        label = ft.Div(
+            ft.H6(model_element["name"], cls="small"),
+            ft.Div(model_element["uuid"]),
+            cls="max",
+        )
+    else:
+        label = ft.H6(model_element["name"], cls="small max")
+
+    url = app.app.url_path_for(
+        "template_page",
+        template_id=template.id,
+        model_element_uuid=model_element["uuid"],
+    )
+
     return ft.A(
-        ft.Div(model_element["name"]),
-        ft.Div(model_element["uuid"], cls="text-xs text-sky-700")
-        if state.show_uuids
-        else None,
+        label,
         id=f"model-element-{model_element['uuid']}",
-        aria_selected="true" if selected else "false",
-        cls=(
-            "aria-selected:bg-primary-500",
-            "aria-selected:dark:hover:bg-primary-500",
-            "aria-selected:dark:text-white",
-            "aria-selected:text-white",
-            "bg-neutral-200",
-            "break-words",
-            "cursor-pointer",
-            "dark:bg-neutral-800",
-            "dark:hover:bg-neutral-700",
-            "dark:text-neutral-400",
-            "duration-300",
-            "flex",
-            "flex-col",
-            "hover:bg-primary-50",
-            "hover:scale-[1.02]",
-            "model_object_btn",
-            "p-4",
-            "place-items-left",
-            "rounded-md",
-            "shadow-sm",
-            "text-left",
-            "transition",
-            "w-full",
-        ),
-        hx_trigger="click",
-        hx_get=app.app.url_path_for(
-            "template_page",
-            template_id=template.id,
-            model_element_uuid=model_element["uuid"],
-        ),
+        aria_selected=("false", "true")[selected],
+        cls="primary-container" if selected else None,
+        href=url,
+        hx_get=url,
         hx_push_url="true",
         hx_include='[name="search"]',
         hx_target="#template_container",
@@ -232,67 +151,53 @@ def model_elements_list(
         for obj in sorted(template.instances, key=lambda x: x["name"])
         if (n := obj["name"].lower()) and all(w in n for w in search_words)
     ]
-    return ft.Div(
-        ft.Div(
-            *(
+    return ft.Ul(
+        *(
+            ft.Li(
                 model_object_button(
                     template=template,
                     model_element=model_element,
                     selected=model_element["uuid"] == selected_id,
                 )
-                for model_element in model_elements
-            ),
-            cls="flex flex-col space-y-4 pl-2 pr-4 my-2",
+            )
+            for model_element in model_elements
         ),
         id="model_object_list",
-        cls="overflow-auto grow",
+        cls="list border scroll",
     )
 
 
 def navbar(template: reports.Template | None, element: str | None) -> ft.Nav:
-    return ft.Nav(
-        breadcrumbs(template, element),
-        ft.Button(
-            icons.printer(),
-            onclick="window.print();",
-            id="print-button",
-            title="Print report",
-            cls="hidden cursor-pointer",
+    return ft.Header(
+        ft.Nav(
+            *breadcrumbs(template, element),
+            ft.Div(cls="max"),
+            ft.Button(
+                ft.I("print"),
+                onclick="window.print();",
+                id="print-button",
+                title="Print report",
+                cls="hidden border circle",
+            ),
+            ft.Button(
+                ft.I("toc"),
+                id="toc-toggle-button",
+                title="Toggle table of contents",
+                onclick="toggleToc()",
+                cls="hidden xl:hidden border circle",
+            ),
+            ft.Button(
+                ft.I("night_sight_auto", id="dark-mode-icon-system"),
+                ft.I("dark_mode", id="dark-mode-icon-dark", cls=("hidden",)),
+                ft.I("light_mode", id="dark-mode-icon-light", cls=("hidden",)),
+                id="dark-mode-button",
+                title="Toggle dark mode",
+                cls="border circle",
+            ),
+            id="page-header",
+            cls="print:hidden",
         ),
-        ft.Button(
-            icons.toc_icon(),
-            id="toc-toggle-button",
-            title="Toggle table of contents",
-            onclick="toggleToc()",
-            cls="hidden xl:hidden cursor-pointer",
-        ),
-        ft.Button(
-            icons.theme_system(id="dark-mode-icon-system"),
-            icons.theme_dark(id="dark-mode-icon-dark", cls=("hidden",)),
-            icons.theme_light(id="dark-mode-icon-light", cls=("hidden",)),
-            id="dark-mode-button",
-            title="Toggle dark mode",
-            cls="cursor-pointer",
-        ),
-        id="page-header",
-        cls=(
-            "bg-primary-500",
-            "dark:bg-neutral-800",
-            "dark:border-b",
-            "dark:border-neutral-700",
-            "flex",
-            "gap-2",
-            "h-12",
-            "min-h-12",
-            "max-h-12",
-            "px-4",
-            "py-0",
-            "print:hidden",
-            "sticky",
-            "top-0",
-            "w-full",
-            "z-50",
-        ),
+        cls="primary-container",
     )
 
 
@@ -314,7 +219,7 @@ def report_placeholder(
         headers = json.dumps({"Render-Environment": render_environment})
 
         ph_content = ft.Div(
-            icons.spinner(),
+            ft.Div(cls="shape loading-indicator extra"),
             hx_trigger="click" if c.DEBUG_SPINNER else "load",
             hx_get=app.rendered_report.to(
                 template_id=template.id,
@@ -328,25 +233,8 @@ def report_placeholder(
     return ph_content
 
 
-def reports_page() -> ft.Div:
-    return ft.Div(
-        *(template_category(t) for t in state.template_categories),
-        id="reports-index",
-        cls=(
-            "bg-white",
-            "dark:bg-neutral-800/50",
-            "dark:shadow-none",
-            "flex",
-            "flex-col",
-            "m-2",
-            "p-4",
-            "place-items-center",
-            "rounded-lg",
-            "shadow-primary-500",
-            "shadow-xs",
-            "space-y-16",
-        ),
-    )
+def reports_page() -> tuple[ft.Article, ...]:
+    return tuple(template_category(t) for t in state.template_categories)
 
 
 def search_field(template: reports.Template, search: str) -> ft.Div:
@@ -404,161 +292,71 @@ def search_field(template: reports.Template, search: str) -> ft.Div:
     )
 
 
-def template_card(template: reports.Template) -> ft.A:
+def template_card(
+    template: reports.Template,
+    *,
+    base_color: str = "",
+) -> ft.Article:
     url = app.app.url_path_for("template_page", template_id=template.id)
 
     chips = []
     if reports.TemplateFlags.EXPERIMENTAL in template.flags:
-        c = ft.Div(
-            icons.badge_experimental(),
-            ft.P("Experimental"),
-            cls=(
-                "bg-yellow-100",
-                "border",
-                "border-yellow-800",
-                "dark:border-yellow-600",
-                "dark:bg-yellow-900",
-                "dark:text-yellow-300",
-                "flex",
-                "flex-row",
-                "font-medium",
-                "max-h-7",
-                "me-2",
-                "px-2.5",
-                "py-1",
-                "rounded-full",
-                "space-x-2",
-                "text-xs",
-                "text-yellow-800",
-            ),
+        c = ft.Button(
+            ft.I("experiment"),
+            ft.Span("Experimental"),
+            cls="chip yellow5 black-text no-margin",
         )
         chips.append(c)
 
     if reports.TemplateFlags.STABLE in template.flags:
-        c = ft.Div(
-            icons.badge_stable(),
-            ft.P("Stable"),
-            cls=(
-                "bg-green-100",
-                "border",
-                "border-green-800",
-                "dark:bg-green-700",
-                "dark:border-green-500",
-                "dark:text-green-200",
-                "flex",
-                "flex-row",
-                "font-medium",
-                "max-h-7",
-                "me-2",
-                "px-2.5",
-                "py-1",
-                "rounded-full",
-                "space-x-2",
-                "text-green-800",
-                "text-xs",
-            ),
+        c = ft.Button(
+            ft.I("verified_user"),
+            ft.Span("Stable"),
+            cls=("chip green5 white-text", None if chips else "no-margin"),
         )
         chips.append(c)
 
     if reports.TemplateFlags.DOCUMENT in template.flags:
-        c = ft.Div(
-            icons.badge_document(),
-            ft.P("Document"),
-            cls=(
-                "bg-blue-200",
-                "border",
-                "border-blue-800",
-                "dark:bg-blue-700",
-                "dark:border-blue-400",
-                "dark:text-blue-200",
-                "flex",
-                "flex-row",
-                "font-medium",
-                "max-h-7",
-                "me-2",
-                "px-2.5",
-                "py-1",
-                "rounded-full",
-                "space-x-2",
-                "text-blue-800",
-                "text-xs",
-            ),
-        )
-        chips.append(c)
-
-    if chips:
-        chip_container = ft.Div(
-            *chips, cls="flex flex-row grow place-items-end p-4"
+        header_icon = ft.Span(
+            ft.I("description", cls="white-text"),
+            ft.Div("Document", cls="tooltip left"),
         )
     else:
-        chip_container = None
+        header_icon = ft.Span(
+            ft.I("file_copy", cls="white-text"),
+            ft.Div("Multi-element template", cls="tooltip left"),
+            ft.Div(template.instance_count, cls="badge tertiary"),
+        )
+
+    if base_color:
+        bg_color = f"{base_color}2"
+        header_color = f"{base_color}9"
+    else:
+        bg_color = "primary-container"
+        header_color = "primary"
+
+    if chips:
+        chips_container = ft.Div(
+            *chips,
+            cls="scroll no-margin medium-padding",
+            style="padding-bottom: 0!important",
+        )
+    else:
+        chips_container = None
 
     return ft.A(
-        ft.Div(
-            ft.Div(
-                template.name,
-                cls="text-neutral-100 dark:text-neutral-400 text-2xl",
+        ft.Article(
+            ft.Nav(
+                ft.H6(template.name, cls="white-text max"),
+                header_icon,
+                cls=f"{header_color} no-margin medium-padding small-round",
             ),
-            ft.Div(
-                icons.file_stack()
-                if template.instance_count > 1
-                else icons.report(),
-                ft.Span(
-                    template.instance_count,
-                    cls="hidden" if template.instance_count <= 1 else "block",
-                ),
-                cls=(
-                    "dark:text-neutral-400",
-                    "flex",
-                    "flex-row",
-                    "items-top",
-                    "pt-2",
-                    "space-x-2",
-                    "text-primary-50",
-                ),
-            ),
-            cls=(
-                "_template-card-header",
-                "bg-primary-500",
-                "dark:bg-neutral-900",
-                "flex",
-                "flex-row",
-                "justify-between",
-                "p-4",
-                "rounded-t-lg",
-            ),
+            chips_container,
+            ft.P(template.description, cls="max no-margin medium-padding"),
+            cls=f"{bg_color}",
+            style="height: 100%; width: 100%",
         ),
-        ft.P(
-            template.description,
-            cls=(
-                "_template-card-description",
-                "dark:text-neutral-300",
-                "p-4",
-                "text-left",
-                "text-neutral-800",
-            ),
-        ),
-        chip_container,
-        cls=(
-            "_template-card",
-            "active:border-blue-600",
-            "bg-white",
-            "dark:bg-neutral-800",
-            "dark:hover:bg-neutral-700",
-            "dark:shadow-neutral-900",
-            "dark:shadow-xs",
-            "duration-300",
-            "flex",
-            "flex-col",
-            "hover:bg-primary-50",
-            "hover:cursor-pointer",
-            "hover:scale-105",
-            "m-4",
-            "rounded-lg",
-            "shadow-lg",
-            "transition",
-            "w-80",
-        ),
+        cls="s12 m6 l4 wave",
         href=url,
         hx_get=url,
         hx_target="#root",
@@ -568,39 +366,22 @@ def template_card(template: reports.Template) -> ft.A:
 
 def template_category(
     template_category: reports.TemplateCategory,
-) -> ft.Div:
-    return ft.Div(
-        ft.P(
-            f"{template_category.idx} Reports",
-            cls=(
-                "border-b",
-                "border-neutral-900",
-                "dark:border-neutral-700",
-                "dark:text-neutral-400",
-                "font-semibold",
-                "pb-2",
-                "text-2xl",
-                "text-center",
-                "text-neutral-800",
-            ),
-        ),
+) -> ft.Article:
+    logger.debug(
+        "Rendering template category %r (color: %s)",
+        template_category.idx,
+        template_category.color,
+    )
+    return ft.Article(
+        ft.H5(f"{template_category.idx} Reports", cls="center-align"),
         ft.Div(
             *[
-                template_card(template)
+                template_card(template, base_color=template_category.color)
                 for template in template_category.templates
             ],
-            cls=(
-                "2xl:grid-cols-4",
-                "auto-rows-auto",
-                "content-around",
-                "grid",
-                "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3",
-                "grid-flow-row",
-                "pt-4",
-            ),
+            cls="grid",
         ),
-        id="template-category",
-        cls="rounded-lg w-full my-2 mx-auto justify-center",
+        cls=f"{template_category.color}1" if template_category.color else "",
     )
 
 
@@ -797,16 +578,16 @@ def bottom_bar() -> ft.Div:
         )
 
     return ft.Div(
-        ft.Div(version_element),
-        ft.Div(
+        ft.Span(version_element),
+        ft.Div(cls="max"),
+        ft.Span(
             ft.A(
-                ft.Span("Contribute on GitHub"),
-                icons.github_logo(),
+                "Contribute on GitHub",
+                fh.NotStr("&nbsp;"),
+                ft.I(icons.github_logo()),
                 href=GITHUB_URL,
                 target="_blank",
-                cls="flex items-center gap-2 hover:underline dark:text-gray-300",
             ),
-            cls="md:w-fit md:mx-auto",
         ),
-        cls="md:grid md:grid-cols-3 w-full px-2 pb-2",
+        cls="row",
     )

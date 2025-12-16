@@ -75,7 +75,7 @@
 {%- if object.inputs -%}
   <h2>Inputs</h2>
   <p>
-    To <i>{{ object.name }}</i> the
+    To <em>{{ object.name }}</em> the
     {{ linked_name(object.owner) | safe if object.owner else "<span style='color: red'>Unassigned Entity</span>" | safe }}
     may need:
   </p>
@@ -105,7 +105,7 @@
 {% if object.outputs %}
   <h2>Outputs</h2>
   <p>
-    The outputs of <i>{{ object.name }}</i> may be used for the following
+    The outputs of <em>{{ object.name }}</em> may be used for the following
     purposes:
   </p>
   <ul>

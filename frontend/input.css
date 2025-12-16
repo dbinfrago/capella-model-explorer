@@ -3,23 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-@import "tailwindcss";
+@import "tailwindcss/theme.css";
+@import "tailwindcss/utilities.css";
 
 @plugin '@tailwindcss/typography';
-
-@theme inline {
-  --color-primary-50: hsl(var(--primary-color-hue) 46.2% 94.9%);
-  --color-primary-100: hsl(var(--primary-color-hue) 49% 90%);
-  --color-primary-200: hsl(var(--primary-color-hue) 47.7% 79%);
-  --color-primary-300: hsl(var(--primary-color-hue) 48.1% 69%);
-  --color-primary-400: hsl(var(--primary-color-hue) 48.6% 58%);
-  --color-primary-500: hsl(var(--primary-color-hue) 50% 47.8%);
-  --color-primary-600: hsl(var(--primary-color-hue) 48.5% 38%);
-  --color-primary-700: hsl(var(--primary-color-hue) 48.6% 29%);
-  --color-primary-800: hsl(var(--primary-color-hue) 48.5% 19%);
-  --color-primary-900: hsl(var(--primary-color-hue) 49% 10%);
-  --color-primary-950: hsl(var(--primary-color-hue) 46.2% 5.1%);
-}
 
 @custom-variant dark (&:where(.dark, .dark *));
 

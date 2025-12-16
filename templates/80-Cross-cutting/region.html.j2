@@ -33,15 +33,15 @@
 
 {% macro describe_transition(tx) %}
   {% if tx.guard %}
-    While in <i>{{ render_name_with_icon_and_type(tx.source) | safe }}</i>, if
+    While in <em>{{ render_name_with_icon_and_type(tx.source) | safe }}</em>, if
     {{ tx.guard.specification['capella:linkedText'] | safe }}, the System shall
     transition to
-    <i>{{ render_name_with_icon_and_type(tx.destination) | safe }}</i>
+    <em>{{ render_name_with_icon_and_type(tx.destination) | safe }}</em>
   {% else %}
     Upon completion of all entry activities of
-    <i>{{ render_name_with_icon(tx.source) | safe }}</i> the System shall
+    <em>{{ render_name_with_icon(tx.source) | safe }}</em> the System shall
     transition to
-    <i>{{ render_name_with_icon_and_type(tx.destination) | safe }}</i>
+    <em>{{ render_name_with_icon_and_type(tx.destination) | safe }}</em>
   {% endif %}
 {% endmacro %}
 
@@ -54,7 +54,7 @@
   {% if state.incoming_transitions %}
     <p>
       The system may transition to {{ state.__class__.__name__ }}
-      <i>{{ state.name }}</i> in the following cases:
+      <em>{{ state.name }}</em> in the following cases:
     </p>
     <p></p>
     <ul>
@@ -133,7 +133,7 @@
   {% if transitions_from %}
     <p>
       The system may transition from {{ state.__class__.__name__ }}
-      <i>{{ state.name }}</i> in the following cases:
+      <em>{{ state.name }}</em> in the following cases:
     </p>
     <p></p>
     <ul>
