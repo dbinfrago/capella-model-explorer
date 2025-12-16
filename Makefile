@@ -7,7 +7,7 @@ BUNDLE_DIR := $(STATIC_DIR)/bundle
 INPUT_CSS := frontend/input.css
 COMPILED_CSS := frontend/compiled.css
 
-CME_MODEL ?=
+export CME_MODEL ?= $(CAPELLA_MODEL)
 CME_HOST ?=
 CME_PORT ?=
 CME_TEMPLATES_DIR ?=
