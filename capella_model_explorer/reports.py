@@ -27,6 +27,29 @@ import capella_model_explorer
 import capella_model_explorer.constants as c
 from capella_model_explorer import app, core, state
 
+CategoryColor: t.TypeAlias = t.Literal[
+    "",
+    "amber",
+    "blue",
+    "blue-grey",
+    "brown",
+    "cyan",
+    "deep-orange",
+    "deep-purple",
+    "green",
+    "grey",
+    "indigo",
+    "light-blue",
+    "light-green",
+    "lime",
+    "orange",
+    "pink",
+    "purple",
+    "red",
+    "teal",
+    "yellow",
+]
+
 SVG_PLACEHOLDER_MARKUP = markupsafe.Markup(
     '<div class="svg-container relative inline-block cursor-wait px-6 py-4 animate-pulse'
     ' rounded-full bg-primary-500 text-neutral-300 dark:bg-primary-700 dark:text-neutral-400"'
@@ -196,6 +219,7 @@ class TemplateScope(p.BaseModel, extra="forbid"):
 
 class TemplateCategory(p.BaseModel, extra="forbid"):
     idx: str = p.Field(title="Category Identifier")
+    color: CategoryColor = ""
     templates: list[Template] = p.Field(
         default_factory=list, title="Templates in this category"
     )
@@ -208,10 +232,11 @@ def template_by_id(id_: str) -> Template | None:
     return None
 
 
-def _register_template_category(category: str) -> None:
+def _register_template_category(category: str, color: t.Any) -> None:
     state.template_categories.append(
         TemplateCategory(
             idx=category,
+            color=color or "",
             templates=[t for t in state.templates if t.category == category],
         )
     )
@@ -366,7 +391,7 @@ def load_templates() -> None:
             template = Template(**template_def)
             state.templates.append(template)
 
-        _register_template_category(category)
+        _register_template_category(category, template_defs.get("color"))
 
 
 def compute_cache_key(template: Template | None, /) -> str:

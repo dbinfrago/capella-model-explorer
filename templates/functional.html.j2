@@ -157,7 +157,7 @@
   {% endif %}
   {% if object.involved_in %}
     <p>
-      While performing <i>{{ object.name }}</i> the
+      While performing <em>{{ object.name }}</em> the
       {{ linked_name_with_icon(object.owner) | safe if object.owner else '<span style="color: red">Unallocated entity</span>' | safe }}
       contributes to:
     </p>

@@ -16,7 +16,7 @@
         {{- unique_exchange_names.append(fex.name) -}}
       {%- endif -%}
     {% endfor %}
-    via <i>{{ interface.name }}</i> interface (component exchange) so that
+    via <em>{{ interface.name }}</em> interface (component exchange) so that
     {{ linked_name(target) | safe }} could&nbsp;
     {%- for fnc in exchanges | map(attribute='target.owner') | unique(attribute="uuid") -%}
       {{ linked_name(fnc) | safe }}{% if not loop.last %},{% else %}{% endif %}

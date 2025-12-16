@@ -7,7 +7,7 @@
   const query = window.matchMedia("(prefers-color-scheme: dark)");
 
   function applyTheme(...args) {
-    document.documentElement.classList.toggle(
+    document.body.classList.toggle(
       "dark",
       localStorage.theme === "dark" ||
         (!("theme" in localStorage) && query.matches),

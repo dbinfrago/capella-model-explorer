@@ -101,11 +101,8 @@ def prefix_redirect(request) -> t.Any:
 def home(request) -> t.Any:
     """Show home/ landing page with all reports in categories."""
     page_content = (
-        ft.Div(
-            components.model_information(),
-            components.reports_page(),
-            cls="flex flex-col space-y-4 place-items-center mx-auto mb-4",
-        ),
+        components.model_information(),
+        components.reports_page(),
         components.bottom_bar(),
     )
     return _maybe_wrap_content(request, None, None, page_content)
@@ -204,10 +201,20 @@ def template_page(
     template = reports.template_by_id(template_id)
     if template is None:
         template_path = pathlib.Path(template_id.replace("|", "/"))
-        content = ft.Div(
-            ft.Div("Template not found:", cls="text-xl"),
-            fh.Code(template_path),
-            cls="dark:text-neutral-100 grow content-center",
+        content = ft.Article(
+            ft.H5("Template not found"),
+            ft.P(
+                "No template found with identifier: ",
+                fh.Code(template_path),
+            ),
+            ft.P(
+                ft.A(
+                    "Back to home page",
+                    href=app.url_path_for("main_home"),
+                    cls="button error",
+                ),
+            ),
+            cls="error-container",
         )
         return _maybe_wrap_content(request, None, None, content)
 

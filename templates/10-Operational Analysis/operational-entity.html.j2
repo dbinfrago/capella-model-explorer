@@ -13,7 +13,7 @@
 
 {% if object.capabilities %}
   <p>
-    <i>{{ object.name }} {% if object.is_human %}(human){% endif %}</i> is
+    <em>{{ object.name }} {% if object.is_human %}(human){% endif %}</em> is
     involved in the following operational capabilities:
   </p>
   <ul>
@@ -27,7 +27,7 @@
   <h2>States and Modes</h2>
   <p>
     The following state machines describe modes and states of
-    <i>{{ object.name }}</i>:
+    <em>{{ object.name }}</em>:
   </p>
   {% for stm in object.state_machines %}
     <h3>{{ linked_name(stm) }}</h3>
@@ -58,7 +58,7 @@
 {% if object.activities %}
   <h2>Activities</h2>
   <p>
-    <i>{{ object.name }}</i> is responsible for the following operational
+    <em>{{ object.name }}</em> is responsible for the following operational
     activities:
   </p>
   <ul>

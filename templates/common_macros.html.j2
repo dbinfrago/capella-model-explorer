@@ -376,7 +376,7 @@
     {% if loop.first %}
       <p>
         This chapter provides an overview of the capabilities that
-        <i>{{ object.name }}</i> enables.
+        <em>{{ object.name }}</em> enables.
       </p>
     {% endif %}
 
@@ -411,7 +411,7 @@
   {% for actor in actors %}
     {% if loop.first %}
       <p>
-        The <i>{{ object.name }}</i> interacts with the components and actors
+        The <em>{{ object.name }}</em> interacts with the components and actors
         described below.
       </p>
     {% endif %}
@@ -428,7 +428,7 @@
 
     {% if involving_caps %}
       <p>
-        <i>{{ actor.name }}</i> is involved in the following
+        <em>{{ actor.name }}</em> is involved in the following
         capabilities:&nbsp;
         {%- for cap in involving_caps -%}
           {{ linked_name_with_icon(cap) | safe }}{% if not loop.last %},{% endif %}
@@ -441,8 +441,8 @@
 
     {% if related_exchanges %}
       <p>
-        The <i>{{ object.name }}</i> interacts with the
-        <i>{{ actor.name }}</i> via the following interfaces:
+        The <em>{{ object.name }}</em> interacts with the
+        <em>{{ actor.name }}</em> via the following interfaces:
       </p>
       <ul>
         {%- for exchange in related_exchanges -%}
@@ -469,7 +469,7 @@
   {% for node in nodes %}
     {% if loop.first %}
       <p>
-        The <i>{{ object.name }}</i> is connected to the nodes described below.
+        The <em>{{ object.name }}</em> is connected to the nodes described below.
       </p>
     {% endif %}
 
@@ -485,7 +485,7 @@
 
     {% if involving_caps %}
       <p>
-        <i>{{ node.name }}</i> is involved in the following capabilities:&nbsp;
+        <em>{{ node.name }}</em> is involved in the following capabilities:&nbsp;
         {%- for cap in involving_caps -%}
           {{ linked_name_with_icon(cap) | safe }}{% if not loop.last %},{% endif %}
         {%- endfor -%}
@@ -497,8 +497,8 @@
 
     {% if related_exchanges %}
       <p>
-        The <i>{{ object.name }}</i> interacts with the
-        <i>{{ node.name }}</i> via the following interfaces:
+        The <em>{{ object.name }}</em> interacts with the
+        <em>{{ node.name }}</em> via the following interfaces:
       </p>
       <ul>
         {%- for exchange in related_exchanges -%}
@@ -624,7 +624,7 @@
     {% if function.inputs %}
       <h4>Inputs</h4>
       <p>
-        The function <i>{{ function.name }}</i> may need the following inputs:
+        The function <em>{{ function.name }}</em> may need the following inputs:
       </p>
 
       {% if external_inputs %}
@@ -634,7 +634,7 @@
 
       {% if internal_inputs %}
         <p><b>Inputs from internal activities of {{ object.name }}</b></p>
-        <p>To <i>{{ function.name }}</i> {{ object.name }} may need:</p>
+        <p>To <em>{{ function.name }}</em> {{ object.name }} may need:</p>
         {{ functional_exchanges_table("Input", "Source", internal_inputs, decorate_own_source) | safe }}
       {% endif %}
 
@@ -672,7 +672,7 @@
     {% if function.outputs %}
       <h4>Outputs</h4>
       <p>
-        The function <i>{{ function.name }}</i> may produce the following
+        The function <em>{{ function.name }}</em> may produce the following
         outputs:
       </p>
 
@@ -683,7 +683,7 @@
 
       {% if internal_outputs %}
         <p><b>Outputs to internal activities of {{ object.name }}</b></p>
-        <p>From <i>{{ function.name }}</i> {{ object.name }} may produce:</p>
+        <p>From <em>{{ function.name }}</em> {{ object.name }} may produce:</p>
         {{ functional_exchanges_table("Output", "Target", internal_outputs, decorate_own_target) | safe }}
       {% endif %}
 
@@ -731,8 +731,8 @@
 
     {% if function.involved_in %}
       <p>
-        While performing <i>{{ function.name }}</i>,
-        <i>{{ object.name }}</i> contributes to the following
+        While performing <em>{{ function.name }}</em>,
+        <em>{{ object.name }}</em> contributes to the following
         capabilities:&nbsp;
         {%- for cap in function.involved_in -%}
           {{ linked_name_with_icon(cap) | safe }}{% if not loop.last %},{% endif %}

@@ -11,6 +11,9 @@ import "./htmx.js";
 import "idiomorph/dist/idiomorph.js";
 import "idiomorph/dist/idiomorph-ext.js";
 
+import "beercss";
+import "material-dynamic-colors";
+
 import "./compiled.css";
 
 window.openDiagramViewer = function (svgContainer) {
