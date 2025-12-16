@@ -1,0 +1,37 @@
+# Copyright DB InfraGO AG and contributors
+# SPDX-License-Identifier: Apache-2.0
+
+[[templates]]
+id = "operational-capability"
+name = "Operational Capability"
+path = "operational-capability.html.j2"
+description = "Specifies an operational capability."
+scope.type = "OperationalCapability"
+scope.below = "oa"
+
+[[templates]]
+id = "operational-entity"
+name = "Operational Entity"
+path = "operational-entity.html.j2"
+description = "Specifies an operational entity."
+flags = ["experimental"]
+scope.type = "Entity"
+scope.below = "oa"
+
+[[templates]]
+id = "operational-activity"
+name = "Operational Activity"
+path = "operational-activity.html.j2"
+description = "Specifies an operational activity."
+flags = ["experimental"]
+scope.type = "OperationalActivity"
+scope.below = "oa"
+
+[[templates]]
+id = "operational-process"
+name = "Operational Process"
+path = "operational-process.html.j2"
+description = "Specifies an operational Process."
+flags = ["experimental"]
+scope.type = "OperationalProcess"
+scope.below = "oa"

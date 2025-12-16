@@ -211,7 +211,7 @@ def template_page(
         )
         return _maybe_wrap_content(request, None, None, content)
 
-    if template.single:
+    if reports.TemplateFlags.SINGLE in template.flags:
         placeholder = components.report_placeholder(template, None)
     elif model_element_uuid:
         placeholder = components.report_placeholder(
