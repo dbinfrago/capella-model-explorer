@@ -44,10 +44,7 @@ RUN git restore -- Dockerfile && \
   uv run cme build
 
 RUN uv venv /app && \
-  uv pip compile pyproject.toml >requirements.txt && \
-  uv pip sync requirements.txt && \
-  rm -f requirements.txt && \
-  uv pip install /build
+  uv sync --active --locked --no-default-groups --no-editable
 
 USER 1000
 
