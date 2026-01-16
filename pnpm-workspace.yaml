@@ -1,6 +1,11 @@
 # Copyright DB InfraGO AG and contributors
 # SPDX-License-Identifier: CC0-1.0
 
+allowBuilds:
+  '@parcel/watcher': false
+  '@swc/core': false
+  lmdb: false
+  msgpackr-extract: false
 ignoredBuiltDependencies:
   - '@parcel/watcher'
   - '@swc/core'

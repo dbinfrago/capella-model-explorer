@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 FROM python:3.12-slim-bookworm AS base
-USER root
+USER 0
 WORKDIR /app
 ENV HOME=/home
 ENV PATH=$HOME/.local/bin:/app/bin:$PATH
@@ -29,7 +29,7 @@ USER 1000
 
 FROM base AS build
 
-USER root
+USER 0
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -Lo /tmp/install.sh https://astral.sh/uv/install.sh && \
   chmod +x /tmp/install.sh && \
@@ -50,7 +50,7 @@ USER 1000
 
 FROM base
 
-USER root
+USER 0
 RUN mkdir /model
 COPY --chown=0:0 --chmod=755 entrypoint.sh /
 COPY --link --from=build --chown=0:0 /app /app
