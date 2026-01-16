@@ -21,14 +21,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        python_version:
-          - "3.11"
-          - "3.12"
-          - "3.13"
-        include:
-          - os: windows-latest
-            python_version: "3.11"
+        os: [ubuntu-latest, windows-latest]
+        python_version: ["3.14"]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -54,7 +48,7 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: "**/pyproject.toml"
-          python-version: "3.11"
+          python-version: "3.14"
       - uses: pnpm/action-setup@v4.1.0
         with:
           version: latest
@@ -75,7 +69,7 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: "**/pyproject.toml"
-          python-version: "3.11"
+          python-version: "3.14"
       - name: Build packages
         run: uv build --no-sources
       - name: Verify packages
