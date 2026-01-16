@@ -1,7 +1,7 @@
 # Copyright DB InfraGO AG and contributors
 # SPDX-License-Identifier: Apache-2.0
 
-FROM python:3.12-slim-bookworm AS base
+FROM python:3.14-slim-trixie AS base
 USER root
 WORKDIR /app
 ENV HOME=/home

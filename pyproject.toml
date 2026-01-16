@@ -15,7 +15,7 @@ dynamic = ["version"]
 name = "capella-model-explorer"
 description = "A webapp for exploring Capella models"
 readme = "README.md"
-requires-python = ">=3.11, <3.14"
+requires-python = "==3.14.*"
 license = "Apache-2.0"
 license-files = ["LICENSES/*.txt"]
 authors = [{ name = "DB InfraGO AG" }]
@@ -25,9 +25,7 @@ classifiers = [
   "Natural Language :: English",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Typing :: Typed",
 ]
 dependencies = [
@@ -98,7 +96,6 @@ show_error_codes = true
 warn_redundant_casts = true
 warn_unreachable = true
 plugins = ["mypypp.deprecated"]
-python_version = "3.11"
 
 [[tool.mypy.overrides]]
 # Untyped third party libraries
@@ -205,3 +202,6 @@ include = ["capella_model_explorer", "capella_model_explorer.*"]
 [tool.setuptools_scm]
 # This section must exist for setuptools_scm to work
 local_scheme = "no-local-version"
+
+[tool.uv]
+exclude-newer = "1w"
