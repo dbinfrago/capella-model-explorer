@@ -15,7 +15,7 @@ dynamic = ["version"]
 name = "capella-model-explorer"
 description = "A webapp for exploring Capella models"
 readme = "README.md"
-requires-python = ">=3.11, <3.14"
+requires-python = "==3.14.*"
 license = "Apache-2.0"
 license-files = ["LICENSES/*.txt"]
 authors = [{ name = "DB InfraGO AG" }]
@@ -25,9 +25,7 @@ classifiers = [
   "Natural Language :: English",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Typing :: Typed",
 ]
 dependencies = [
@@ -52,7 +50,6 @@ Documentation = "https://dbinfrago.github.io/capella-model-explorer"
 [dependency-groups]
 dev = [
   "coverage>=7.13.0",
-  "docformatter[tomli]==1.7.7",
   "mypy==1.19.0",
   "mypypp==0.1.1",
   "pre-commit>=4.5.0",
@@ -98,7 +95,6 @@ show_error_codes = true
 warn_redundant_casts = true
 warn_unreachable = true
 plugins = ["mypypp.deprecated"]
-python_version = "3.11"
 
 [[tool.mypy.overrides]]
 # Untyped third party libraries

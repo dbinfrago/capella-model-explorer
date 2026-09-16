@@ -1,8 +1,8 @@
 # Copyright DB InfraGO AG and contributors
 # SPDX-License-Identifier: Apache-2.0
 
-FROM python:3.12-slim-bookworm AS base
-USER root
+FROM python:3.14-slim-trixie AS base
+USER 0
 WORKDIR /app
 ENV HOME=/home
 ENV PATH=$HOME/.local/bin:/app/bin:$PATH
@@ -29,13 +29,13 @@ USER 1000
 
 FROM base AS build
 
-USER root
+USER 0
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -Lo /tmp/install.sh https://astral.sh/uv/install.sh && \
   chmod +x /tmp/install.sh && \
   UV_NO_MODIFY_PATH=1 sh /tmp/install.sh && \
   rm /tmp/install.sh
-RUN curl -fsSL https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" PNPM_HOME="$HOME/.local/bin" bash -
+RUN curl -fsSL https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" PNPM_HOME="$HOME/.local" bash -
 
 COPY . /build
 
@@ -50,7 +50,7 @@ USER 1000
 
 FROM base
 
-USER root
+USER 0
 RUN mkdir /model
 COPY --chown=0:0 --chmod=755 entrypoint.sh /
 COPY --link --from=build --chown=0:0 /app /app

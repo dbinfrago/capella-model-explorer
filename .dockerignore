@@ -3,6 +3,7 @@
 
 *.egg-info/
 .*cache/
+.jj/
 .venv/
 Dockerfile
 node_modules/
