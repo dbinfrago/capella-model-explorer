@@ -16,7 +16,7 @@ import capellambse
 import jinja2
 import prometheus_client
 import starlette
-import starlette.middleware
+import starlette.middleware.base
 from fasthtml import common as fh
 from fasthtml import ft
 
