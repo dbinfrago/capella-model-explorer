@@ -61,8 +61,9 @@ dev = [
   "python-lsp-server[rope]>=1.14.0",
   "reuse==6.2.0",
   "ruff==0.14.9",
-  "types-pyyaml>=6.0.12.20250915",
+  "trio>=0.35.0",
   "types-lxml==2025.11.25",
+  "types-pyyaml>=6.0.12.20250915",
 ]
 
 docs = ["furo>=2025.9.25", "sphinx>=8.2.3", "sphinx-copybutton>=0.5.2"]
