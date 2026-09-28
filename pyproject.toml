@@ -49,6 +49,7 @@ Documentation = "https://dbinfrago.github.io/capella-model-explorer"
 
 [dependency-groups]
 dev = [
+  "capellambse[termgraphics]>=0.8.1",
   "coverage>=7.13.0",
   "mypy==1.19.0",
   "mypypp==0.1.1",
