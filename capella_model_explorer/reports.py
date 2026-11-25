@@ -11,6 +11,7 @@ import pathlib
 import re
 import traceback
 import typing as t
+from urllib.parse import urlencode
 
 import capellambse
 import capellambse.model as m
@@ -282,7 +283,7 @@ def diagram_placeholder(
     attr: str,
     /,
     **kw: t.Any,
-) -> t.Any:
+) -> markupsafe.Markup:
     logger.info(
         "Generating diagram placeholder for %r on %r", attr, parent.uuid
     )
@@ -310,7 +311,9 @@ def diagram_placeholder(
             f"got {type(diag).__name__}"
         )
 
-    url = app.app.url_path_for("render_diagram", parent=parent.uuid, attr=attr)
+    url = str(
+        app.app.url_path_for("render_diagram", parent=parent.uuid, attr=attr)
+    )
     if kw:
         try:
             params = json.dumps(kw)
@@ -318,7 +321,7 @@ def diagram_placeholder(
             raise TypeError(
                 f"Render parameters must be JSON serializable: {kw!r}"
             ) from None
-        url = f"{url}?params={params}"
+        url = f"{url}?{urlencode({'params': params})}"
 
     render_environment = compute_cache_key(None)
     headers = json.dumps({"Render-Environment": render_environment})

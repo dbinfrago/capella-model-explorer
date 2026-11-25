@@ -21,7 +21,6 @@ import uvicorn
 
 import capella_model_explorer
 import capella_model_explorer.constants as c
-from capella_model_explorer import app
 
 logger = logging.getLogger(__name__)
 
@@ -371,7 +370,7 @@ def main(
     default="",
     show_default=True,
     help="Add a prefix to all web routes."
-    f" (Note: this prefix does not apply to '{app.metrics.to()}').",
+    " (Note: this prefix does not apply to '/metrics').",
 )
 @click.option(
     "--image",

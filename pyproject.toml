@@ -32,11 +32,12 @@ dependencies = [
   "capellambse-context-diagrams>=0.7.23",
   "capellambse>=0.7.12",
   "click>=8.3.1",
+  "fastapi>=0.141.1",
+  "htpy>=26.5.1",
   "jinja2>=3.1.6",
   "logfmter>=0.0.11",
   "lxml>=6.0.2",
   "prometheus-client>=0.23.1",
-  "python-fasthtml>=0.12.35",
   "uvicorn>=0.38.0",
 ]
 
@@ -51,6 +52,7 @@ Documentation = "https://dbinfrago.github.io/capella-model-explorer"
 dev = [
   "capellambse[termgraphics]>=0.8.1",
   "coverage>=7.13.0",
+  "httpx2>=2.13.1",
   "mypy==1.19.0",
   "mypypp==0.1.1",
   "pre-commit>=4.5.0",
@@ -97,11 +99,6 @@ show_error_codes = true
 warn_redundant_casts = true
 warn_unreachable = true
 plugins = ["mypypp.deprecated"]
-
-[[tool.mypy.overrides]]
-# Untyped third party libraries
-module = ["fasthtml.*", "requests.*"]
-ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 addopts = """
