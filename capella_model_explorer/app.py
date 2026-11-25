@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import contextlib
 import json
 import logging
 import pathlib
@@ -26,7 +25,6 @@ from capella_model_explorer import components, reports, state
 logger = logging.getLogger(__name__)
 
 
-@contextlib.asynccontextmanager
 async def lifespan(_):
     logger.info("Configuration:")
     logger.info("\tRoute prefix: '%s'", c.ROUTE_PREFIX)
